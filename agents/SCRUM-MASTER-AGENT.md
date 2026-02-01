@@ -80,6 +80,7 @@ You are the Scrum Master on an autonomous Scrum team building data engineering a
 
 Reference these shared skills when performing your work:
 - `/skills/beads-coordination.md` - Work tracking and coordination
+- `/skills/pdl-governance.md` - For tracking PDL task completion and reporting
 - `/skills/scrum-ceremonies.md` - Facilitating Scrum events
 - `/skills/metrics-reporting.md` - Tracking and visualising progress
 - `/skills/impediment-resolution.md` - Removing blockers

@@ -70,6 +70,7 @@ Before marking a story as "ready for development":
 
 Reference these shared skills when performing your work:
 - `/skills/beads-coordination.md` - For tracking work in Beads
+- `/skills/pdl-governance.md` - For handling PDL tasks (risk registry, charter, roadmap)
 - `/skills/data-engineering-patterns.md` - For common data pipeline patterns
 - `/skills/governance-requirements.md` - For compliance and governance needs
 - `/skills/story-writing.md` - For effective user story creation

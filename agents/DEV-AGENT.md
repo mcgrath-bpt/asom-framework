@@ -86,6 +86,7 @@ Reference these shared skills when performing your work:
 - `/skills/snowflake-development.md` - Snowflake DDL, DML, and optimisation
 - `/skills/testing-strategies.md` - Unit, integration, and data quality testing
 - `/skills/beads-coordination.md` - Work tracking and coordination
+- `/skills/pdl-governance.md` - For handling PDL tasks (architecture handbook, ITOH)
 - `/skills/governance-requirements.md` - Compliance and security controls
 - `/skills/git-workflow.md` - Version control and branching
 

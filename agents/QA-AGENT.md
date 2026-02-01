@@ -68,6 +68,7 @@ You are the Quality Assurance (QA) specialist on an autonomous Scrum team buildi
 Reference these shared skills when performing your work:
 - `/skills/testing-strategies.md` - Testing approaches and patterns
 - `/skills/data-quality-validation.md` - Data quality testing techniques
+- `/skills/pdl-governance.md` - For handling PDL tasks (OQ tests, traceability matrix)
 - `/skills/governance-requirements.md` - Compliance testing
 - `/skills/beads-coordination.md` - Work tracking
 - `/skills/python-data-engineering.md` - Understanding implementation
