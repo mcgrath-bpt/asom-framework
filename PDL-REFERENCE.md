@@ -1,4 +1,8 @@
-# PDL Workflow in ASOM
+# PDL Quick Reference for ASOM
+
+**For Humans:** This document provides a quick overview of how Project Documentation List (PDL) items are handled in ASOM.
+
+**For Agents:** Reference `skills/pdl-governance.md` for detailed procedures.
 
 ## Overview
 
@@ -275,25 +279,25 @@ Blocker: No
 ## Benefits of This Approach
 
 ### For Compliance
-    ✅ All PDL items tracked explicitly
-    ✅ Clear accountability (assigned agents)
-    ✅ Audit trail of completion
-    ✅ Evidence generated, not manually authored
-    ✅ Mapping to SDLC artefacts documented
+  ✅ All PDL items tracked explicitly
+  ✅ Clear accountability (assigned agents)
+  ✅ Audit trail of completion
+  ✅ Evidence generated, not manually authored
+  ✅ Mapping to SDLC artefacts documented
 
 ### For Delivery
-    ✅ No duplicate documentation
-    ✅ PDL integrated into workflow (not separate)
-    ✅ Early identification of blockers
-    ✅ Continuous PDL updates (not last-minute)
-    ✅ Reuses existing tools and artefacts
+  ✅ No duplicate documentation
+  ✅ PDL integrated into workflow (not separate)
+  ✅ Early identification of blockers
+  ✅ Continuous PDL updates (not last-minute)
+  ✅ Reuses existing tools and artefacts
 
 ### For Quality
-    ✅ Tests serve as IQ/OQ/PQ evidence
-    ✅ Architecture always documented
-    ✅ Operations always have runbooks
-    ✅ Governance built-in, not bolted-on
-    ✅ TDD ensures compliance controls work
+  ✅ Tests serve as IQ/OQ/PQ evidence
+  ✅ Architecture always documented
+  ✅ Operations always have runbooks
+  ✅ Governance built-in, not bolted-on
+  ✅ TDD ensures compliance controls work
 
 ## Anti-Patterns to Avoid
 
@@ -316,13 +320,13 @@ Blocker: No
 
 After implementing this PDL workflow:
 
-    ✅ PDL tasks created at epic level
-    ✅ PDL tasks tracked throughout sprint
-    ✅ PDL completeness visible in daily coordination
-    ✅ No QA/PROD deployments with incomplete PDL
-    ✅ All artefacts exist and are current
-    ✅ Audit trail of PDL task completion
-    ✅ Governance integrated, not separate
+  ✅ PDL tasks created at epic level
+  ✅ PDL tasks tracked throughout sprint
+  ✅ PDL completeness visible in daily coordination
+  ✅ No QA/PROD deployments with incomplete PDL
+  ✅ All artefacts exist and are current
+  ✅ Audit trail of PDL task completion
+  ✅ Governance integrated, not separate
 
 ## Example: Full Sprint PDL Lifecycle
 

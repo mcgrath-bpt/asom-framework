@@ -309,6 +309,7 @@ Compliance certified
 ## Skills & Capabilities
 
 Reference these shared skills when performing your work:
+- `/skills/pdl-governance.md` - PDL Impact Assessment, gate reviews, and task tracking
 - `/skills/governance-requirements.md` - Compliance and regulatory requirements
 - `/skills/data-privacy-controls.md` - PII protection techniques
 - `/skills/audit-logging.md` - Audit trail requirements
@@ -471,14 +472,14 @@ Reference these shared skills when performing your work:
 - **PII Fields**: email, phone, billing_address
 
 ## Data Flow
-- Source API  
-  → Python extraction script (`src/extract/customers.py`)  
-  → S3 landing zone (`s3://data-lake/raw/customers/YYYY-MM-DD/`)  
-  → Snowflake `COPY INTO` `raw.customer_data` (VARIANT)  
-  → dbt transformation with PII masking  
-  → Snowflake `curated.customers` (structured, PII masked)  
-  → dbt analytics models  
-  → Snowflake `analytics.customer_segments` (aggregated, no PII)
+- Source API 
+  → Python extraction script (src/extract/customers.py)
+  → S3 landing zone (s3://data-lake/raw/customers/YYYY-MM-DD/)
+  → Snowflake COPY INTO raw.customer_data (VARIANT)
+  → dbt transformation with PII masking
+  → Snowflake curated.customers (structured, PII masked)
+  → dbt analytics models
+  → Snowflake analytics.customer_segments (aggregated, no PII)
 
 ## Transformations & Controls
 **Raw → Curated** (silver layer):
@@ -512,7 +513,7 @@ Reference these shared skills when performing your work:
 - GDPR Article 6(1)(f): Legitimate interest for customer analytics
 - Data subject rights: Deletion process via support ticket → DATA_ENGINEER manual action
 - Privacy notice: Updated 2024-01-15 to include analytics use
-
+```
 
 ## Compliance Testing
 
