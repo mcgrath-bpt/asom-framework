@@ -105,6 +105,12 @@ Acceptance Criteria:
 - [Data quality criterion with measurable threshold]
 - [Governance criterion from compliance checklist]
 
+Test Requirements (TDD):
+- Unit test: [Specific test for core functionality]
+- Integration test: [End-to-end workflow validation]
+- Data quality test: [Quality threshold validation]
+- Governance test: [Compliance control validation]
+
 Technical Context:
 - Data sources: [systems, APIs, files]
 - Business rules: [transformation logic, validation rules]

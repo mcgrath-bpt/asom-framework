@@ -1,19 +1,38 @@
-# Software Development Driven (SDD) Agent Framework
+# ASOM: Agentic Scrum Operating Model
 
-An autonomous Scrum team framework for data engineering and data science projects using Python and Snowflake.
+An operating model for building production-quality data engineering and data science solutions using specialized agent roles, Scrum methodology, and Test-Driven Development (TDD) as fundamental practice.
 
 ## Overview
 
-This framework enables Software Development Driven (SDD) - an approach where AI agents autonomously handle software development end-to-end, taking ideas and changes and delivering working software without human intervention in the development process.
+**ASOM (Agentic Scrum Operating Model)** enables you to work as a complete Scrum team by embodying specialized agent roles, with TDD as the foundation for quality and governance.
 
 The framework implements a complete Scrum team with specialized agent roles:
-- **Business Analyst** - Requirements gathering and story refinement
-- **Developer** - Implementation and code quality
-- **QA** - Testing and quality assurance
-- **Governance** - Compliance, security, and documentation
+- **Business Analyst** - Requirements gathering and story refinement with test requirements
+- **Developer** - Implementation using strict TDD methodology (RED → GREEN → REFACTOR)
+- **QA** - Testing validation and quality assurance (including TDD process verification)
+- **Governance** - Compliance, security, and documentation (tests prove controls work)
 - **Scrum Master** - Process facilitation and coordination
 
 All agents coordinate through Beads, a git-backed issue tracker designed specifically for AI agent collaboration.
+
+## Core Principles
+
+### 1. Test-Driven Development (Fundamental)
+TDD is not optional in ASOM - it's the foundation:
+- **RED**: Write failing test first (defines requirements)
+- **GREEN**: Write minimum code to pass (implements requirements)
+- **REFACTOR**: Improve code quality (maintains standards)
+
+Every story includes test requirements. Every implementation starts with tests. Every validation proves tests work.
+
+### 2. Agentic Role Separation
+Work divided among specialized roles with clear responsibilities, decision frameworks, and handoff protocols.
+
+### 3. Governance by Default
+Compliance built into acceptance criteria, not bolted on after. Tests prove governance controls work.
+
+### 4. Scrum Methodology
+Standard Scrum practices: sprints, ceremonies, Definition of Done, Product Delivery Log (PDL).
 
 ## Quick Start
 
@@ -46,13 +65,13 @@ As Product Owner (you), create the initial epic:
 bd epic create "Customer Data Pipeline with Full Governance"
 ```
 
-The agents will then:
-1. **Governance Agent** - Creates PDL template and defines governance requirements
-2. **BA Agent** - Breaks down epic into user stories with acceptance criteria
+The agents will then follow ASOM with TDD:
+1. **Governance Agent** - Creates PDL template and defines compliance requirements
+2. **BA Agent** - Breaks down epic into stories WITH TEST REQUIREMENTS in acceptance criteria
 3. **Scrum Master** - Facilitates sprint planning and tracks progress
-4. **Dev Agent** - Implements stories with tests and documentation
-5. **QA Agent** - Validates against acceptance criteria
-6. **Governance Agent** - Certifies compliance and completes PDL
+4. **Dev Agent** - Implements stories using TDD (RED → GREEN → REFACTOR)
+5. **QA Agent** - Validates TDD process was followed and runs additional tests
+6. **Governance Agent** - Certifies compliance (tests prove controls work) and completes PDL
 
 ## Framework Structure
 
