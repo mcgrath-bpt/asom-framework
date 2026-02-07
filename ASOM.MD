@@ -1,8 +1,24 @@
 # ASOM: Agentic Scrum Operating Model
 
+> **Agents assist. Systems enforce. Humans approve.**
+
 ## What is ASOM?
 
-**ASOM (Agentic Scrum Operating Model)** is a framework for building production-quality data engineering and data science solutions by operating as a specialized Scrum team through distinct agent roles, with Test-Driven Development (TDD) as a fundamental practice.
+**ASOM (Agentic Scrum Operating Model)** is an operating model for building production-quality data engineering and data science solutions using agent-assisted delivery under enforced SDLC controls, with Test-Driven Development (TDD) as a fundamental practice.
+
+## What ASOM Is / Is Not
+
+**ASOM IS:**
+- An **operating model** defining roles, responsibilities, and control boundaries for agent-assisted data delivery
+- A set of **enforced SDLC controls** (C-01 through C-10) verified by authoritative systems
+- A **governance framework** where evidence is produced by CI/CD, platforms, and policy engines -- not by agents
+- A **separation of duties model** where agents draft, systems enforce, and humans approve
+
+**ASOM IS NOT:**
+- **Autonomous delivery** -- agents accelerate but never bypass controls
+- **Self-approving AI** -- agents cannot approve, certify, or generate evidence
+- **A governance shortcut** -- controls are enforced by gates, not by agent promises
+- **Role-playing** -- without TDD, enforced gates, and system-produced evidence, ASOM provides no value
 
 ## Core Principles
 
@@ -33,7 +49,7 @@ TDD is not optional in ASOM - it's the foundation of how we build:
 - **Quality by design**: Can't mark story "done" without passing tests
 - **Regression prevention**: Refactoring is safe with test coverage
 - **Documentation**: Tests document expected behavior
-- **Confidence**: Enables autonomous agent work with safety net
+- **Confidence**: Enables agent-assisted work with safety net
 - **Governance**: Tests prove compliance controls work
 
 ### 3. PDL Governance ("Mapping Not Duplication")
@@ -64,7 +80,49 @@ Tests serve as IQ (Installation Qualification) evidence. QA creates OQ (Operatio
 
 For detailed PDL workflow, see `PDL-REFERENCE.md` and `skills/pdl-governance.md`.
 
-### 4. Scrum Methodology
+### 4. Control Objectives (C-01 through C-10)
+
+ASOM v2 defines ten control objectives that state what must be true for any release promoted beyond DEV. Controls are technology-agnostic and align to regulated SDLC expectations (SOX, GxP, ITGC).
+
+| Control | Objective |
+|---------|-----------|
+| **C-01** | Change Authorization -- all changes formally approved before promotion |
+| **C-02** | Separation of Duties -- no individual or agent can approve their own changes |
+| **C-03** | Requirements Traceability -- all changes trace to approved business intent |
+| **C-04** | Data Classification & Handling -- data handled per classification (PII, PHI) |
+| **C-05** | Access Control & Least Privilege -- only authorized users/services access data |
+| **C-06** | Data Quality Controls -- critical DQ rules enforced |
+| **C-07** | Reproducibility -- builds and transformations are reproducible |
+| **C-08** | Incremental Correctness -- incremental/reprocessing logic behaves correctly |
+| **C-09** | Observability & Alerting -- failures are detectable and actionable |
+| **C-10** | Cost & Performance Guardrails -- no unacceptable cost/performance regressions |
+
+**Key rules:**
+- Controls define **what must be true**. Tooling defines **how**.
+- Evidence must be produced by **authoritative systems**, not agents.
+- Agents may assist, but **cannot satisfy, approve, or certify** controls.
+- "N/A" is allowed only with explicit justification and approval.
+
+For the full control catalog with evidence requirements and verification rules, see `docs/ASOM_CONTROLS.md`.
+
+### 5. Evidence & Gates
+
+**Evidence Ledger:** A formal, machine-verifiable index of control evidence produced during a release. Evidence is generated only by authoritative systems (CI/CD, platform APIs, policy scanners, test frameworks). The ledger is immutable, traceable to a single commit SHA and CRQ per release, and sufficient for governance verification without screenshots or narratives.
+
+**Promotion Gates (G1 through G4):**
+
+| Gate | Trigger | Purpose |
+|------|---------|---------|
+| **G1** | PR Merge | Prevent untracked / untested changes |
+| **G2** | Release Candidate | Ensure release readiness and CRQ linkage |
+| **G3** | Promote to QA | Enforce controls + human approval |
+| **G4** | Promote to PROD | Enforce final approval + PROD-specific controls |
+
+Gates are deterministic, machine-enforced, and auditable. A gate does not recommend -- it allows or blocks. Agents may prepare artifacts and surface gaps, but agents may not approve gates, override failures, or manipulate evidence.
+
+For full gate rules and evidence ledger specification, see `docs/ASOM_CONTROLS.md`.
+
+### 6. Scrum Methodology
 ASOM follows standard Scrum practices:
 - 2-week sprints with clear goals
 - Daily coordination (async via issue tracker)
@@ -72,7 +130,7 @@ ASOM follows standard Scrum practices:
 - Definition of Ready and Definition of Done
 - PDL tracking integrated into workflow
 
-### 5. Structured Coordination
+### 7. Structured Coordination
 All work tracked in issue tracker (Beads or similar):
 - Transparent progress visibility
 - Clear agent handoffs
@@ -228,12 +286,12 @@ QA Agent validates the TDD process was followed:
 Result: APPROVED for governance review
 ```
 
-## ASOM Workflow with TDD
+## ASOM Workflow with TDD and Gates
 
 ```
 Epic Created (PO)
   ↓
-[Governance] Define compliance requirements
+[Governance] Define compliance requirements (Control Applicability Assessment: C-01 through C-10)
   ↓
 [BA] Create stories with TEST REQUIREMENTS in acceptance criteria
   ↓
@@ -244,13 +302,21 @@ Epic Created (PO)
   ├─ REFACTOR: Improve code quality
   └─ Verify: All tests still green
   ↓
+  ── G1: PR Merge Gate (linked story, tests pass, evidence entries created) ──
+  ↓
 [QA] Validate TDD process was followed + Run additional tests
   ↓
-[Governance] Validate compliance (tests prove controls work)
+[Governance] Verify evidence completeness (verification report, not approval)
   ↓
-[Scrum Master] Update metrics, mark done
+  ── G2: Release Candidate Gate (CRQ created, scope defined, controls assessed) ──
   ↓
-Story Complete (All tests green, governance certified)
+  ── G3: QA Promotion Gate (human approval via ServiceNow, evidence complete, SoD verified) ──
+  ↓
+[QA Environment] Validation in controlled environment
+  ↓
+  ── G4: PROD Promotion Gate (human PROD approval, PROD-specific controls, no unresolved failures) ──
+  ↓
+Story Complete (All tests green, gates passed, evidence ledger complete)
 ```
 
 ## Why TDD Enables ASOM
@@ -327,6 +393,8 @@ A story is only "Done" when:
 - [ ] Access controls implemented and TESTED
 - [ ] Data quality thresholds validated via TESTS
 - [ ] Compliance evidence collected (test results)
+- [ ] **Evidence ledger entries exist** for all applicable controls (produced by CI/CD, not agents)
+- [ ] **All applicable gates passed** (G1 through G4 as required)
 
 ### Documentation Requirements:
 - [ ] Code documented (docstrings, comments)
@@ -337,8 +405,9 @@ A story is only "Done" when:
 
 ### Process Requirements:
 - [ ] Beads updated with progress
-- [ ] Code reviewed by QA Agent
-- [ ] Governance validated by Governance Agent
+- [ ] Code reviewed by QA Agent (human QA reviews outcomes)
+- [ ] Governance verified by Governance Agent (verification report, not approval)
+- [ ] Human approval recorded for QA and PROD promotion
 - [ ] All handoffs completed
 - [ ] Story marked "done" in Beads
 
@@ -492,19 +561,21 @@ Every retrospective:
 
 ## ASOM Philosophy
 
-**Test-Driven Development** isn't just a practice - it's the foundation that makes the Agentic Scrum Operating Model work:
+> **Agents assist. Systems enforce. Humans approve.**
+
+**Test-Driven Development** isn't just a practice -- it's the foundation that makes the Agentic Scrum Operating Model work:
 
 - Tests define clear requirements (enables BA Agent)
 - Tests guide implementation (enables Dev Agent)
 - Tests validate quality (enables QA Agent)
-- Tests prove compliance (enables Governance Agent)
+- Tests produce evidence for compliance (verified by Governance Agent)
 - Tests provide metrics (enables Scrum Master Agent)
 
-**Without TDD, ASOM is just role-playing.**
-**With TDD, ASOM is a rigorous, quality-first operating model.**
+**Without TDD, enforced gates, and system-produced evidence, ASOM is just role-playing.**
+**With TDD, control objectives, and machine-enforced gates, ASOM is a rigorous, quality-first operating model.**
 
 ---
 
-**ASOM = Agentic Scrum + TDD + Governance**
+**ASOM = Agent-Assisted Scrum + TDD + Enforced Controls + Evidence Ledger**
 
 This is how you build production-quality data engineering solutions with confidence, quality, and compliance.

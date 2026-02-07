@@ -43,7 +43,7 @@ This skill covers testing approaches for data engineering pipelines, with Test-D
 **For ASOM:**
 - Tests serve as IQ evidence (PDL requirement)
 - Proves governance controls work
-- Enables autonomous agent work (safety net)
+- Enables agent-assisted work under enforced controls (safety net)
 
 ## Testing Pyramid for Data Engineering
 
@@ -629,6 +629,51 @@ pytest --cov=src --cov-report=xml --junitxml=test-results.xml
 - Coverage reports show governance compliance
 - Test results archived for audit
 
+## Test Taxonomy (T1-T8)
+
+Every change must be evaluated against the full test taxonomy. Categories are not optional -- they are selected based on what the change touches.
+
+| ID | Category | Purpose | Example |
+|----|----------|---------|---------|
+| T1 | Unit / Logic Tests | Verify individual functions and transformation logic in isolation | `test_mask_email_deterministic()` |
+| T2 | Schema / Contract Tests | Verify that schemas, column types, and interface contracts match expectations | `test_curated_customers_schema_matches_contract()` |
+| T3 | Data Quality Rule Tests | Validate completeness, uniqueness, accuracy, and business rules on data | `test_customer_email_completeness_above_95_pct()` |
+| T4 | Access Control / Security Tests | Confirm RBAC enforcement, PII masking, and credential handling | `test_business_user_cannot_access_raw_layer()` |
+| T5 | Idempotency / Reprocessing Tests | Verify that re-running a pipeline produces the same result without duplication | `test_reload_same_batch_no_duplicate_rows()` |
+| T6 | Performance / Cost Guardrail Tests | Validate query cost, runtime, warehouse sizing, and resource usage stay within bounds | `test_daily_refresh_completes_under_10_minutes()` |
+| T7 | Observability / Alert Tests | Confirm that logging, metrics emission, and alerting rules fire correctly | `test_pipeline_failure_triggers_pagerduty_alert()` |
+| T8 | Integration / E2E Tests | Validate components working together across system boundaries | `test_customer_pipeline_api_to_snowflake_e2e()` |
+
+### Minimum Required by Change Type
+
+Not every change requires all eight categories. Use this matrix to determine which T-categories apply:
+
+| Change Type | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 |
+|-------------|----|----|----|----|----|----|----|----|
+| New pipeline | Required | Required | Required | Required | Required | Required | Recommended | Required |
+| Schema change | Recommended | Required | Required | If access changes | Required | Recommended | Recommended | Required |
+| Access control change | -- | -- | -- | Required | -- | -- | Required | Required |
+| Performance optimization | -- | -- | -- | -- | Required | Required | Required | Recommended |
+| Bug fix | Required | If schema affected | If DQ affected | If access affected | Recommended | -- | -- | Recommended |
+| New data quality rule | -- | -- | Required | -- | -- | -- | Required | Recommended |
+
+**Legend:** Required = must have at least one automated test. Recommended = should have unless explicitly justified. -- = not applicable.
+
+## Anti-Gaming Rules
+
+A feature is **not considered tested** unless all applicable categories have at least one automated test:
+- Schema / contract tests (T2)
+- Data quality rules (T3)
+- Access control validation (T4)
+- Idempotency / reprocessing (T5)
+- Performance or cost guardrails (T6)
+
+Coverage percentage alone does not satisfy compliance. A pipeline at 90% line coverage that lacks T4 (access control) and T5 (idempotency) tests is **not compliant**.
+
+The QA Agent must verify category coverage, not just line coverage, during validation. The Governance Agent must confirm that the applicable T-categories for the change type are present before certifying.
+
+> **Note:** Test results become evidence ledger entries, produced by CI/CD. See `docs/ASOM_CONTROLS.md`.
+
 ## Summary
 
 **TDD is fundamental to ASOM:**
@@ -641,6 +686,11 @@ pytest --cov=src --cov-report=xml --junitxml=test-results.xml
 - Data Quality (30%): Business rules
 - Integration (10%): End-to-end
 
+**Test taxonomy (T1-T8):**
+- Every change is evaluated against the full taxonomy
+- Applicable categories determined by change type matrix
+- Anti-gaming rules prevent coverage-only compliance
+
 **Coverage targets:**
 - Overall: 80%
 - Critical: 95%+
@@ -650,3 +700,4 @@ pytest --cov=src --cov-report=xml --junitxml=test-results.xml
 - IQ/OQ evidence
 - Prove controls work
 - Enable confident refactoring
+- Test results feed the Evidence Ledger (see `docs/ASOM_CONTROLS.md`)

@@ -356,6 +356,41 @@ Escalate to Product Owner if:
 - Retention policy conflicts with business needs
 - Data breach suspected
 
+## Control Objective Mapping
+
+Every governance requirement in this document maps to a formal control objective defined in `docs/ASOM_CONTROLS.md`. Use this mapping to connect implementation work to auditable controls.
+
+| Governance Requirement | Control ID(s) | Control Name |
+|------------------------|---------------|--------------|
+| PII Protection (masking, redaction) | C-04, C-05 | C-04: Data Privacy, C-05: Access Control |
+| Audit Logging | C-07 | Audit Trail Completeness |
+| Access Control (RBAC) | C-05 | Access Control |
+| Data Quality Thresholds | C-06 | Data Quality |
+| Requirements Traceability | C-03 | Requirements Traceability |
+| Change Authorisation | C-01 | Change Authorisation |
+| Separation of Duties | C-02 | Separation of Duties |
+| Idempotency / Reprocessing | C-08 | Incremental Correctness |
+| Observability / Alerting | C-09 | Observability |
+| Performance / Cost Guardrails | C-10 | Cost Governance |
+| Encryption (at rest, in transit) | C-04 | Data Privacy |
+| Data Retention Policies | C-04, C-07 | Data Privacy, Audit Trail |
+| Documentation (ADRs, lineage) | C-03 | Requirements Traceability |
+
+When implementing any governance requirement, the Dev Agent must tag the corresponding control objective. When certifying, the Governance Agent must verify that evidence exists for each applicable control.
+
+## Evidence Rules
+
+Evidence is the foundation of ASOM governance. The following rules are non-negotiable:
+
+1. **Evidence must come from deterministic systems** (CI/CD, platform APIs, test runners). Agents reference evidence; agents never generate evidence.
+2. **Acceptable evidence sources:** CI/CD test reports, Snowflake query logs, Git commit history, ServiceNow CRQ records, platform API responses.
+3. **Unacceptable evidence:** Screenshots, emails, agent-generated narrative, manual attestations without system backing.
+4. **Evidence must be traceable:** Every evidence entry links to a commit SHA, build ID, or system record ID.
+5. **Evidence must be immutable:** Once written to the Evidence Ledger, entries cannot be modified or deleted.
+6. **Evidence is indexed:** All evidence is recorded in the Evidence Ledger with control objective, source system, and timestamp.
+
+For the full Evidence Ledger specification, see `docs/ASOM_CONTROLS.md`.
+
 ## Best Practices
 
 1. **Default deny**: Start with no access, grant as needed

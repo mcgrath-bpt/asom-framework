@@ -22,41 +22,41 @@ The Governance Agent:
 ## PDL Categories & ASOM Mapping
 
 ### Initiation & Governance
-| PDL Item | ASOM Mapping | Responsible Agent |
-|----------|--------------|-------------------|
-| Project Charter | Epic/Demand in issue tracker | BA (with PO) |
-| Roadmap | Issue tracker roadmap view | BA + Scrum Master |
-| Risk Registry | Risks tracked in issue tracker | BA (assigned by Governance) |
+| PDL Item | ASOM Mapping | Responsible Agent | Control Mapping |
+|----------|--------------|-------------------|-----------------|
+| Project Charter | Epic/Demand in issue tracker | BA (with PO) | C-01, C-03 |
+| Roadmap | Issue tracker roadmap view | BA + Scrum Master | C-01, C-03 |
+| Risk Registry | Risks tracked in issue tracker | BA (assigned by Governance) | C-04, C-05 |
 
 ### Architecture & Security
-| PDL Item | ASOM Mapping | Responsible Agent |
-|----------|--------------|-------------------|
-| Architecture Handbook | Confluence/docs architecture page | Dev (assigned by Governance) |
-| Security Assessment | Security review outcome | Governance |
-| Privacy Impact | DPIA for PII processing | Governance |
+| PDL Item | ASOM Mapping | Responsible Agent | Control Mapping |
+|----------|--------------|-------------------|-----------------|
+| Architecture Handbook | Confluence/docs architecture page | Dev (assigned by Governance) | C-07 |
+| Security Assessment | Security review outcome | Governance | C-04, C-05 |
+| Privacy Impact | DPIA for PII processing | Governance | C-04, C-05 |
 
 ### Requirements
-| PDL Item | ASOM Mapping | Responsible Agent |
-|----------|--------------|-------------------|
-| User Requirements (URS) | User Stories in issue tracker | BA |
-| Functional Spec (FS) | Acceptance Criteria in stories | BA |
-| Design Specs | Design documentation in docs/ | Dev |
+| PDL Item | ASOM Mapping | Responsible Agent | Control Mapping |
+|----------|--------------|-------------------|-----------------|
+| User Requirements (URS) | User Stories in issue tracker | BA | C-03 |
+| Functional Spec (FS) | Acceptance Criteria in stories | BA | C-03 |
+| Design Specs | Design documentation in docs/ | Dev | C-07 |
 
 ### Testing (IQ/OQ/PQ)
-| PDL Item | ASOM Mapping | Responsible Agent |
-|----------|--------------|-------------------|
-| Test Strategy | Master test strategy (referenced) | QA |
-| IQ Evidence | pytest results, unit/integration tests | Dev (TDD) + QA (validation) |
-| OQ Evidence | Business rule validation tests | QA (assigned by Governance) |
-| PQ Evidence | Performance/UAT tests (if applicable) | QA |
-| Traceability Matrix | Auto-generated from issue tracker | QA (assigned by Governance) |
+| PDL Item | ASOM Mapping | Responsible Agent | Control Mapping |
+|----------|--------------|-------------------|-----------------|
+| Test Strategy | Master test strategy (referenced) | QA | C-06, C-08 |
+| IQ Evidence | pytest results, unit/integration tests | Dev (TDD) + QA (validation) | C-06, C-07, C-08 |
+| OQ Evidence | Business rule validation tests | QA (assigned by Governance) | C-06, C-08 |
+| PQ Evidence | Performance/UAT tests (if applicable) | QA | C-10 |
+| Traceability Matrix | Auto-generated from issue tracker | QA (assigned by Governance) | C-03 |
 
 ### Release & Operations
-| PDL Item | ASOM Mapping | Responsible Agent |
-|----------|--------------|-------------------|
-| Change Request | CRQ record in change management | Scrum Master |
-| Operational Handbook (ITOH) | Runbook, monitoring, troubleshooting | Dev (assigned by Governance) |
-| Service Transition | Deployment procedures | Dev + Scrum Master |
+| PDL Item | ASOM Mapping | Responsible Agent | Control Mapping |
+|----------|--------------|-------------------|-----------------|
+| Change Request | CRQ record in change management | Scrum Master | C-01, C-02 |
+| Operational Handbook (ITOH) | Runbook, monitoring, troubleshooting | Dev (assigned by Governance) | C-09 |
+| Service Transition | Deployment procedures | Dev + Scrum Master | C-01, C-07 |
 
 ## Complete PDL Workflow
 
@@ -97,7 +97,7 @@ Identifies 6 PDL items impacted:
 - Links to epic E001
 - Marks complete
 
-[Governance Agent] Approves T001
+[Governance Agent] Verifies T001
 ```
 
 **PDL Status: 17% complete (1/6 tasks done)**
@@ -116,7 +116,7 @@ Identifies 6 PDL items impacted:
 - Links to code implementation
 - Marks complete
 
-[Governance Agent] Reviews and approves T002
+[Governance Agent] Reviews and verifies T002
 
 [Dev Agent] Handles T006 (ITOH)
 - Documents deployment procedures
@@ -124,7 +124,7 @@ Identifies 6 PDL items impacted:
 - Includes troubleshooting guide
 - Marks complete
 
-[Governance Agent] Reviews and approves T006
+[Governance Agent] Reviews and verifies T006
 ```
 
 **PDL Status: 50% complete (3/6 tasks done)**
@@ -137,7 +137,7 @@ Identifies 6 PDL items impacted:
 T003: Security Assessment
 - Reviews PII handling approach
 - Validates encryption in transit/rest
-- Approves security controls
+- Verifies security controls
 - Marks complete
 
 T004: Privacy Impact Assessment
@@ -163,15 +163,15 @@ T004: Privacy Impact Assessment
 - Creates traceability matrix
 - Marks complete
 
-[Governance Agent] Reviews and approves T005
+[Governance Agent] Reviews and verifies T005
 ```
 
 **PDL Status: 100% complete (6/6 tasks done)**
 
-### 6. QA Deployment Gate (Governance Agent)
+### 6. QA Deployment Gate (Governance Agent -- Verification)
 
 ```
-[Governance Agent] PDL Gate Review
+[Governance Agent] PDL Verification Report (G3 -- QA Promotion)
 
 Checks:
 ✓ Risk Registry updated (T001)
@@ -180,45 +180,85 @@ Checks:
 ✓ Privacy Impact Assessment complete (T004)
 ✓ OQ Test Plan executed (T005)
 ✓ ITOH updated (T006)
-✓ IQ evidence exists (pytest results)
+✓ IQ evidence exists (pytest results) -- produced by CI
 ✓ Traceability matrix generated
 ✓ All user stories have acceptance criteria (FS)
 ✓ PII masking validated
 ✓ Audit logging verified
 
 PDL Status: 100% complete ✓
-All artefacts exist and current ✓
+Evidence Ledger: All applicable controls have evidence entries ✓
 
-DECISION: APPROVE QA deployment
+VERIFICATION STATUS: All controls satisfied.
+Human approval required for QA promotion via ServiceNow.
 ```
 
-### 7. PROD Deployment Gate (Governance Agent)
+### 7. PROD Deployment Gate (Governance Agent -- Verification)
 
 ```
-[Governance Agent] Re-validates for PROD
+[Governance Agent] Re-validates for PROD (G4 -- PROD Promotion)
 
 Checks:
 ✓ No changes since QA (PDL still current)
-✓ IQ evidence for PROD environment
+✓ IQ evidence for PROD environment -- produced by CI
 ✓ Change Request created
-✓ All governance controls tested in QA
+✓ All governance controls verified in QA
 ✓ Rollback procedures documented
 
 PDL Status: 100% complete and validated ✓
+Evidence Ledger: All applicable controls have PROD evidence entries ✓
 
-DECISION: APPROVE PROD deployment
-Compliance certified ✓
+VERIFICATION STATUS: All controls satisfied.
+Human PROD approval required via ServiceNow.
 ```
+
+## PDL and the Evidence Ledger
+
+Every PDL item must be backed by one or more evidence ledger entries. The evidence ledger is a formal, machine-verifiable index of control evidence produced during a release.
+
+| PDL Status | Evidence Ledger Meaning |
+|------------|------------------------|
+| **Produced** | Evidence entry exists in ledger, produced by an authoritative system (CI/CD, platform, policy engine) |
+| **Referenced** | Evidence entry links to an external authoritative system (e.g., ServiceNow CRQ record) |
+| **N/A** | Justification recorded and approved by human; documented as evidence entry |
+
+**Key rules:**
+- PDL status is only valid when backed by verifiable evidence ledger entries
+- Agents may reference evidence but cannot generate, modify, or certify it
+- Evidence must trace to a single commit SHA, build execution, and CRQ per release
+- The ledger indexes evidence -- it does not duplicate artifacts
+
+For the full evidence ledger specification, see `docs/ASOM_CONTROLS.md`.
+
+## PDL and Gates
+
+Promotion gates verify PDL completeness at key transitions. Each gate checks that all applicable PDL items have corresponding evidence ledger entries.
+
+| Gate | PDL Verification |
+|------|-----------------|
+| **G1 (PR Merge)** | Linked Jira story exists, unit tests executed, evidence entries created |
+| **G2 (Release Candidate)** | Release scope defined, CRQ created, control applicability determined |
+| **G3 (QA Promotion)** | PDL 100% complete, all applicable controls have evidence, human QA approval recorded in ServiceNow |
+| **G4 (PROD Promotion)** | PDL re-validated, PROD-specific evidence present, human PROD approval recorded in ServiceNow |
+
+**Gate behavior:**
+- Gates are deterministic and machine-enforced -- they allow or block
+- Incomplete PDL blocks promotion at G3 and G4
+- Governance Agent verifies evidence completeness but does not approve promotion
+- Human approval is required at G3 (QA) and G4 (PROD) via ServiceNow
+
+For the full gate rules, see `docs/ASOM_CONTROLS.md`.
 
 ## Agent Responsibilities Summary
 
-### Governance Agent (PDL Gatekeeper)
-- Performs PDL Impact Assessment (epic/story level)
+### Governance Agent (PDL Gatekeeper -- Verification Only)
+- Performs Control Applicability Assessment (epic/story level, referencing C-01 through C-10)
 - Creates PDL tracking tasks
 - Assigns tasks to appropriate agents
 - Monitors PDL task completion
-- Blocks QA/PROD if PDL incomplete
+- Verifies evidence completeness before QA/PROD (does not approve promotion)
 - Performs own governance tasks (security, privacy assessments)
+- Publishes verification reports (not approvals -- humans approve via ServiceNow)
 
 ### BA Agent (Requirements & Risk)
 - Creates user stories (serves as URS/FS)
@@ -346,12 +386,16 @@ After implementing this PDL workflow:
 - QA completes T005 (OQ Tests)
 - PDL Status: 100%
 
-**QA Gate:**
-- Governance validates PDL: 100% complete ✓
-- APPROVED for QA
+**QA Gate (G3):**
+- Governance verifies PDL: 100% complete ✓
+- Evidence ledger: All applicable controls have evidence ✓
+- Human QA approval recorded in ServiceNow ✓
+- G3 PASSED
 
-**PROD Gate:**
+**PROD Gate (G4):**
 - Governance re-validates: Still 100% ✓
-- APPROVED for PROD
+- Evidence ledger: PROD evidence entries present ✓
+- Human PROD approval recorded in ServiceNow ✓
+- G4 PASSED
 
-**Result:** Compliant release with complete audit trail
+**Result:** Compliant release with complete audit trail and evidence ledger

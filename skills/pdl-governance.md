@@ -16,6 +16,24 @@ The Project Documentation List (PDL) represents regulatory and audit artefacts r
 2. **Referenced** - Exists in corporate system
 3. **Not Applicable** - Explicitly justified exemption
 
+## Evidence Ledger Awareness
+
+Each PDL item has corresponding entries in the Evidence Ledger (see `docs/ASOM_CONTROLS.md`). The relationship is:
+
+- **PDL item** = what compliance artefact is required
+- **Evidence Ledger entry** = proof that the artefact exists, with source system, timestamp, and control objective
+
+When a PDL item is marked PRODUCED, the Governance Agent must verify that at least one Evidence Ledger entry exists for it. Evidence comes from deterministic systems (CI/CD, platform APIs, test runners) -- agents reference evidence but never generate it.
+
+### Gate References
+
+PDL completeness is verified at two promotion gates:
+
+- **G3 (QA Promotion Gate):** All PDL items for the release scope must be PRODUCED, REFERENCED, or justified N/A. Evidence Ledger entries must exist for all PRODUCED items. Incomplete PDL blocks QA promotion.
+- **G4 (PROD Promotion Gate):** PDL completeness is re-verified. Any PDL items added or changed since G3 must have fresh evidence. PROD-specific items (CRQ, rollback procedures, production monitoring) must be complete.
+
+For full gate rule definitions, see `docs/ASOM_CONTROLS.md`.
+
 ## PDL Categories
 
 ### Initiation & Governance
@@ -68,43 +86,46 @@ Epic: [Epic Title]
 PDL Impact Assessment:
 
 INITIATION & GOVERNANCE:
-├─ Project Charter → [PRODUCED/REFERENCED/N/A]
+├─ Project Charter → [PRODUCED/REFERENCED/N/A] | Controls: C-01
 │  └─ Action: [Create task / Link to existing / Justify N/A]
-├─ Roadmap → [PRODUCED/REFERENCED/N/A]
+├─ Roadmap → [PRODUCED/REFERENCED/N/A] | Controls: C-01
 │  └─ Action: [Create task / Link to existing / Justify N/A]
-└─ Risk Registry → [PRODUCED/REFERENCED/N/A]
+└─ Risk Registry → [PRODUCED/REFERENCED/N/A] | Controls: C-01, C-09
    └─ Action: [Create task / Link to existing / Justify N/A]
 
 ARCHITECTURE & SECURITY:
-├─ Architecture Handbook → [PRODUCED/REFERENCED/N/A]
+├─ Architecture Handbook → [PRODUCED/REFERENCED/N/A] | Controls: C-03
 │  └─ Action: [Create task / Link to existing / Justify N/A]
-├─ Security Assessment → [PRODUCED/REFERENCED/N/A]
+├─ Security Assessment → [PRODUCED/REFERENCED/N/A] | Controls: C-04, C-05
 │  └─ Action: [Create task / Link to existing / Justify N/A]
-└─ Privacy Impact → [PRODUCED/REFERENCED/N/A]
+└─ Privacy Impact → [PRODUCED/REFERENCED/N/A] | Controls: C-04
    └─ Action: [Create task / Link to existing / Justify N/A]
 
 REQUIREMENTS:
-├─ Functional Spec → PRODUCED (via acceptance criteria)
-└─ User Requirements → PRODUCED (via user stories)
+├─ Functional Spec → PRODUCED (via acceptance criteria) | Controls: C-03
+└─ User Requirements → PRODUCED (via user stories) | Controls: C-03
 
 TESTING:
-├─ Test Strategy → [PRODUCED/REFERENCED/N/A]
-├─ IQ Evidence → PRODUCED (via TDD)
-├─ OQ Evidence → [PRODUCED/REFERENCED/N/A]
+├─ Test Strategy → [PRODUCED/REFERENCED/N/A] | Controls: C-06, C-08
+├─ IQ Evidence → PRODUCED (via TDD) | Controls: C-06, C-08
+├─ OQ Evidence → [PRODUCED/REFERENCED/N/A] | Controls: C-06
 │  └─ Action: [Create task if business rules need validation]
-└─ Traceability Matrix → PRODUCED (auto-generated)
+└─ Traceability Matrix → PRODUCED (auto-generated) | Controls: C-03
 
 RELEASE:
-└─ Change Request → PRODUCED (when ready for PROD)
+└─ Change Request → PRODUCED (when ready for PROD) | Controls: C-01, C-02
 
 OPERATIONS:
-├─ ITOH → [PRODUCED/REFERENCED/N/A]
+├─ ITOH → [PRODUCED/REFERENCED/N/A] | Controls: C-09
 │  └─ Action: [Create task if ops procedures change]
-└─ Service Transition → [PRODUCED/REFERENCED/N/A]
+└─ Service Transition → [PRODUCED/REFERENCED/N/A] | Controls: C-09
 
 PDL Tasks Created: [List task IDs]
 PDL Status: [% complete]
+Evidence Ledger: [X] of [Y] items have ledger entries
 ```
+
+For control objective definitions, see `docs/ASOM_CONTROLS.md`.
 
 ### PDL Task Creation
 
@@ -167,8 +188,9 @@ COMPLIANCE:
 
 PDL Status: [X]% complete
 
-DECISION: [APPROVE / HOLD / REJECT]
-REASON: [If HOLD/REJECT, specify blocking items]
+VERIFICATION STATUS: [Complete / Incomplete]
+BLOCKING ITEMS: [If Incomplete, specify what is missing]
+NOTE: Human approval required for promotion. This verification confirms evidence completeness only.
 ```
 
 ### PDL Gate Review (PROD Deployment)
@@ -195,8 +217,10 @@ FINAL COMPLIANCE:
 [ ] No compliance violations
 [ ] Evidence archived for audit
 
-DECISION: [APPROVE / REJECT]
-Compliance Certificate: [ISSUED / WITHHELD]
+VERIFICATION STATUS: [Complete / Incomplete]
+BLOCKING ITEMS: [If Incomplete, specify what is missing]
+NOTE: Human approval required for promotion. This verification confirms evidence completeness only.
+Compliance Certificate: [ISSUED / WITHHELD] (requires human sign-off)
 ```
 
 ## For BA Agent
@@ -605,3 +629,9 @@ Steps:
 
 **Key principle:**
 Mapping Not Duplication - demonstrate controls via existing artefacts
+
+## References
+
+- `docs/ASOM_CONTROLS.md` -- Control objectives, evidence ledger specification, gate rules, and separation of duties
+- `skills/governance-requirements.md` -- Detailed governance requirements and control objective mapping
+- `skills/testing-strategies.md` -- Test taxonomy (T1-T8) and anti-gaming rules for test evidence

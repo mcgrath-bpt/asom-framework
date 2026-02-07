@@ -39,49 +39,45 @@ Description:
 
 ---
 
-### Day 1: Governance PDL Impact Assessment
+### Day 1: Governance Control Applicability Assessment
 
 **Load Governance Agent:**
 ```
 Load agents/GOVERNANCE-AGENT.md and skills/pdl-governance.md
 
-Perform PDL Impact Assessment for Epic E001
+Perform Control Applicability Assessment for Epic E001 (referencing C-01 through C-10)
 ```
 
-**Governance Agent creates PDL tasks:**
+**Governance Agent assesses control applicability and creates PDL tasks:**
 
 ```markdown
-PDL Impact Assessment for E001:
+Control Applicability Assessment for E001:
 
-INITIATION & GOVERNANCE:
-├─ Risk Registry → UPDATE REQUIRED
-│  └─ Create T001: Document PII processing risk (assign to BA)
-└─ Roadmap → PRODUCED (issue tracker roadmap)
+APPLICABLE CONTROLS:
+├─ C-01 Change Authorization → APPLICABLE (CRQ required for QA/PROD)
+├─ C-02 Separation of Duties → APPLICABLE (enforced by Git + CI/CD)
+├─ C-03 Requirements Traceability → APPLICABLE (Jira stories linked)
+├─ C-04 Data Classification & Handling → APPLICABLE (PII fields present)
+├─ C-05 Access Control & Least Privilege → APPLICABLE (RBAC required)
+├─ C-06 Data Quality Controls → APPLICABLE (DQ thresholds required)
+├─ C-07 Reproducibility → APPLICABLE (CI/CD build artifacts)
+├─ C-08 Incremental Correctness → APPLICABLE (daily incremental loads)
+├─ C-09 Observability & Alerting → APPLICABLE (pipeline monitoring)
+└─ C-10 Cost & Performance Guardrails → N/A (justified: small dataset, no material cost)
 
-ARCHITECTURE & SECURITY:
-├─ Architecture Handbook → UPDATE REQUIRED
-│  └─ Create T002: Document API integration pattern (assign to Dev)
-└─ Privacy Impact → REQUIRED
-   └─ Create T003: Complete DPIA for PII fields (assign to Governance)
-
-REQUIREMENTS:
-├─ Functional Spec → PRODUCED (via acceptance criteria)
-└─ User Requirements → PRODUCED (via user stories)
-
-TESTING:
-├─ IQ Evidence → PRODUCED (via TDD)
-└─ OQ Evidence → REQUIRED
-   └─ Create T004: Create OQ test plan for business rules (assign to QA)
-
-OPERATIONS:
-└─ ITOH → UPDATE REQUIRED
-   └─ Create T005: Document API monitoring procedures (assign to Dev)
+PDL TASKS (mapped to controls):
+├─ T001: Document PII processing risk (assign to BA) [C-04]
+├─ T002: Document API integration pattern (assign to Dev) [C-07]
+├─ T003: Complete DPIA for PII fields (assign to Governance) [C-04, C-05]
+├─ T004: Create OQ test plan for business rules (assign to QA) [C-06, C-08]
+└─ T005: Document API monitoring procedures (assign to Dev) [C-09]
 
 PDL Tasks Created: T001-T005
 PDL Status: 0% (5 tasks to complete)
+Evidence Ledger: Initialized for E001 (entries will be created by CI/CD)
 ```
 
-**Result:** 5 PDL tracking tasks created and assigned.
+**Result:** Control applicability determined, 5 PDL tracking tasks created and assigned.
 
 ---
 
@@ -171,13 +167,15 @@ Risks identified for E001:
 Status: T001 complete
 ```
 
-**Result:** 
+**Result:**
 - 5 stories created (S001-S005)
 - PDL task T001 complete (20% PDL done)
 
 ---
 
 ### Day 3-5: Development (TDD)
+
+> **G1 (PR Merge Gate)** applies at the end of each story's development: linked Jira story, tests pass, evidence entries created by CI.
 
 **Load Dev Agent:**
 ```
@@ -310,6 +308,7 @@ Status: T005 complete
 
 **Result:**
 - S001 implemented with TDD (87% coverage)
+- Evidence entries created by CI: unit test results, integration test results, coverage report
 - PDL tasks T002, T005 complete (60% PDL done)
 
 ---
@@ -323,10 +322,10 @@ Load agents/QA-AGENT.md, skills/testing-strategies.md, skills/data-quality-valid
 Validate S001 implementation
 ```
 
-**QA Agent validates:**
+**QA Agent publishes QA execution report. Human QA reviews outcomes.**
 
 ```markdown
-## QA Validation Report: S001
+## QA Execution Report: S001
 
 **TDD Process Verification:**
 ✅ Tests written before implementation (commit history confirms)
@@ -334,7 +333,7 @@ Validate S001 implementation
 ✅ GREEN phase: Implementation makes tests pass
 ✅ REFACTOR phase: Code quality improved, tests remain green
 
-**Test Execution:**
+**Test Execution (evidence entries created by CI):**
 ✅ Unit tests: 8/8 passing
 ✅ Integration tests: 3/3 passing
 ✅ Coverage: 87% (exceeds 80% requirement)
@@ -351,7 +350,8 @@ Validate S001 implementation
 ✅ Stores in Snowflake CUSTOMER_RAW
 ✅ Completes in <30 minutes (actual: 8 minutes)
 
-Result: APPROVED for governance review
+Human QA Reviewer: [name] reviewed test outcomes and execution report.
+Result: FORWARDED for governance verification
 ```
 
 **QA handles PDL task:**
@@ -389,12 +389,16 @@ Status: T004 complete
 ```
 
 **Result:**
-- S001 validated and approved
+- S001 validated, QA execution report published
+- Human QA reviewed outcomes
+- Evidence entries: QA execution report, OQ test results (created by CI)
 - PDL task T004 complete (80% PDL done)
 
 ---
 
-### Day 8: Governance Certification
+### Day 8: Governance Verification and QA Promotion
+
+> **G3 (QA Promotion Gate)** applies here: human approval required via ServiceNow.
 
 **Load Governance Agent:**
 ```
@@ -426,30 +430,30 @@ Task: T003 - Privacy Impact Assessment
 Status: T003 complete
 ```
 
-**Governance performs QA Gate Review:**
+**Governance Agent verifies evidence completeness (verification report, not approval):**
 
 ```markdown
-## QA Deployment Gate Review: Sprint 1
+## QA Deployment Verification Report: Sprint 1
 
-**REQUIREMENTS:**
+**REQUIREMENTS (C-03):**
 ✅ User stories have acceptance criteria (S001-S005)
-✅ Stories approved via workflow
+✅ All code changes reference Jira IDs
 
-**TESTING:**
-✅ IQ evidence exists (pytest results, 87% coverage)
-✅ OQ test plan executed (T004 complete)
+**TESTING (C-06, C-08):**
+✅ IQ evidence exists (pytest results, 87% coverage) -- produced by CI
+✅ OQ test plan executed (T004 complete) -- produced by CI
 ✅ Traceability: All stories have tests
 
-**ARCHITECTURE:**
+**ARCHITECTURE (C-07):**
 ✅ Architecture Handbook updated (T002 complete)
 ✅ API integration documented
 
-**SECURITY & PRIVACY:**
+**SECURITY & PRIVACY (C-04, C-05):**
 ✅ Privacy impact assessment complete (T003)
 ✅ PII masking implemented (S002)
 ✅ Access controls configured
 
-**OPERATIONS:**
+**OPERATIONS (C-09):**
 ✅ ITOH updated (T005 complete)
 ✅ Monitoring procedures documented
 
@@ -461,15 +465,16 @@ Status: T003 complete
 ✅ T005: ITOH - COMPLETE
 
 PDL Completeness: 100% ✅
+Evidence Ledger: All applicable controls have evidence entries.
 
-**DECISION: APPROVE QA deployment**
-All governance requirements met.
-Evidence collected and archived.
+**VERIFICATION STATUS: All controls satisfied. Human approval required for QA promotion via ServiceNow.**
 ```
 
 **Result:**
 - All PDL tasks complete (100%)
-- QA deployment APPROVED
+- Evidence ledger verified
+- Human QA approval recorded in ServiceNow (CRQ state = Approved for QA)
+- G3 gate PASSED -- QA deployment allowed
 
 ---
 
@@ -488,37 +493,43 @@ pytest tests/smoke/ --env=qa
 
 ---
 
-### Day 10: PROD Gate Review
+### Day 10: PROD Verification and Promotion
 
-**Governance performs PROD gate review:**
+> **G4 (PROD Promotion Gate)** applies here: human PROD approval required via ServiceNow.
+
+**Governance Agent verifies evidence completeness for PROD:**
 
 ```markdown
-## PROD Deployment Gate Review
+## PROD Deployment Verification Report
 
 **RE-VALIDATION:**
 ✅ No architecture changes since QA
 ✅ PDL items still current
 ✅ No new functionality added
 
-**PROD-SPECIFIC:**
-✅ IQ evidence for PROD environment
+**PROD-SPECIFIC (C-09, C-10):**
+✅ IQ evidence for PROD environment -- produced by CI
 ✅ Change Request created (CRQ-12345)
 ✅ Rollback procedures documented
 ✅ PROD access controls configured
+✅ Observability & alerting enabled (C-09)
 
 **FINAL COMPLIANCE:**
-✅ All governance controls tested in QA
+✅ All governance controls verified in QA
 ✅ PII masking working correctly
 ✅ Audit trail complete
 ✅ No compliance violations
 
 PDL Status: 100% complete and validated ✅
+Evidence Ledger: All applicable controls have PROD evidence entries.
 
-**DECISION: APPROVE PROD deployment**
-Compliance certified ✅
+**VERIFICATION STATUS: All controls satisfied. Human PROD approval required via ServiceNow.**
 ```
 
-**Result:** PROD deployment APPROVED
+**Result:**
+- Evidence ledger verified for PROD
+- Human PROD approval recorded in ServiceNow (CRQ state = Approved for PROD)
+- G4 gate PASSED -- PROD deployment allowed
 
 ---
 
@@ -546,11 +557,17 @@ Compliance certified ✅
 - ✅ TDD process followed
 - ✅ Code reviewed and approved
 
+**Evidence & Gates:**
+- ✅ Evidence ledger entries for all applicable controls (C-01 through C-09)
+- ✅ G1 gate passed (PR merge)
+- ✅ G3 gate passed (QA promotion with human approval)
+- ✅ G4 gate passed (PROD promotion with human approval)
+
 **Governance:**
 - ✅ PII protected
 - ✅ Audit logging complete
-- ✅ Compliance certified
-- ✅ Audit-ready
+- ✅ Governance verification reports complete
+- ✅ Audit-ready (evidence ledger sufficient for audit walkthrough)
 
 ## Key Learnings
 
@@ -600,6 +617,8 @@ Now you're ready for Sprint 2!
 - **Agent roles?** → See `agents/[AGENT]-AGENT.md`
 - **Overall philosophy?** → See `ASOM.md`
 
-**Remember**: ASOM = TDD + PDL + Agentic Roles + Scrum
+**Remember**: Agents assist. Systems enforce. Humans approve.
 
-You're now operating with production-grade quality and complete governance! 🎉
+**ASOM = Agent-Assisted Scrum + TDD + Enforced Controls + Evidence Ledger**
+
+You're now operating with production-grade quality and complete governance!

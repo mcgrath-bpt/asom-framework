@@ -1,6 +1,6 @@
 ---
 name: beads-coordination
-description: Git-backed issue tracking for autonomous agent coordination. Use for creating epics/stories, tracking work, managing handoffs, and maintaining visibility across the autonomous Scrum team.
+description: Git-backed issue tracking for agent-assisted coordination. Use for creating epics/stories, tracking work, managing handoffs, and maintaining visibility across the agent-assisted Scrum team.
 ---
 
 # Beads Coordination

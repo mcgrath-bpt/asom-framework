@@ -22,6 +22,7 @@ ASOM v2 – Delivery & Governance Hub
 
 (single space or top-level page)
 
+```text
 ASOM v2 – Delivery & Governance Hub
 ├── 1. What is ASOM v2 (Read First)
 ├── 2. Operating Model
@@ -30,7 +31,7 @@ ASOM v2 – Delivery & Governance Hub
 ├── 5. Release & Audit Evidence
 ├── 6. Exceptions & Decisions
 └── 7. Reference & Templates
-
+```
 This mirrors how Audit + Engineering mentally navigate.
 
 ⸻
@@ -105,12 +106,14 @@ This is where PDL mapping happens.
 
 Structure:
 
+```text
 Release YYYY-MM-DD (CRQ-XXXX)
 ├── Release Overview
 ├── Scope (Jira links)
 ├── Control Coverage
 ├── Evidence Ledger Snapshot
 └── Approval Summary
+```
 
 No screenshots.
 Everything links back to systems of record.

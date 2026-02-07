@@ -9,10 +9,11 @@ Enterprise-safe delivery for regulated cloud data platforms
 How to Read This Playbook
 
 This playbook has three reading paths:
+```text
 	•	Executives / ARB / Audit → Sections 1, 3, 6, 9
 	•	Platform & Architecture → Sections 2, 3, 5
 	•	Delivery Teams → Sections 4, 7, 8
-
+```
 You do not need to read it end-to-end to use it.
 
 ⸻
@@ -104,10 +105,12 @@ If it is not technically enforced, it does not exist.
 
 2.3 Environment Flow
 
+```text
 DEV  →  QA  →  PROD
         ▲        ▲
    Human approval  Human approval
    (ServiceNow)   (ServiceNow)
+```
 
 Exactly one CRQ per release governs QA and PROD.
 

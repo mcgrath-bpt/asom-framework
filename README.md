@@ -1,28 +1,39 @@
 # ASOM: Agentic Scrum Operating Model
 
-**Build production-quality data engineering pipelines using specialized AI agent roles, Test-Driven Development, and integrated governance.**
+**Agent-assisted delivery under enforced SDLC controls for regulated data platforms.**
 
-[![Framework Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/yourusername/asom-framework)
+> **Agents assist. Systems enforce. Humans approve.**
+
+[![Framework Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/yourusername/asom-framework)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
 ## What is ASOM?
 
-ASOM (Agentic Scrum Operating Model) is a framework for autonomous software development in data engineering, combining:
+ASOM (Agentic Scrum Operating Model) is an operating model for agent-assisted delivery under enforced SDLC controls. Agents draft and interpret artifacts, while authoritative systems (CI/CD, SCM, ticketing, policy engines) produce immutable evidence and enforce gates. ASOM is designed for regulated data platforms where separation of duties and auditability are mandatory.
 
-- 🤖 **Five specialized agent roles** (BA, Dev, QA, Governance, Scrum Master)
-- ✅ **Test-Driven Development** as fundamental practice (RED → GREEN → REFACTOR)
-- 📋 **PDL Governance** integrated into workflow ("Mapping Not Duplication")
-- 🔄 **Scrum methodology** with 2-week sprints
-- 🎯 **Production-ready quality** with complete audit trail
+AI agents accelerate -- but never bypass -- SDLC controls. Governance, auditability, and separation of duties are enforced by authoritative enterprise systems (Git, CI/CD, Jira, Confluence, ServiceNow).
+
+ASOM combines:
+
+- **Five specialized agent roles** (BA, Dev, QA, Governance, Scrum Master)
+- **Test-Driven Development** as fundamental practice (RED -> GREEN -> REFACTOR)
+- **PDL Governance** integrated into workflow ("Mapping Not Duplication")
+- **Control Objectives** (C-01 through C-10) defining what must be true
+- **Evidence Ledger** with immutable, system-produced compliance evidence
+- **Promotion Gates** (G1 through G4) enforcing controls at every transition
+- **Scrum methodology** with 2-week sprints
+- **Production-ready quality** with complete audit trail
 
 **Use ASOM when you need:**
 - Regulatory compliance (GDPR, SOX, HIPAA)
 - Audit-ready documentation
 - High-quality, tested code
 - Clear governance boundaries
-- Autonomous AI-driven development
+- Machine-enforced promotion gates
+- Immutable evidence ledger
+- Separation of duties enforcement
 
 ---
 
@@ -48,7 +59,7 @@ Follow the [QUICKSTART.md](QUICKSTART.md) guide to build your first customer dat
 
 ### 3. Read the Philosophy
 
-See [ASOM.md](ASOM.md) to understand the core principles and why TDD + PDL governance enable autonomous development.
+See [ASOM.md](ASOM.md) to understand the core principles and why TDD + PDL governance + enforced controls enable agent-assisted delivery.
 
 ---
 
@@ -77,21 +88,38 @@ Each agent has:
 **TDD is mandatory in ASOM** - not optional:
 
 ```
-RED → GREEN → REFACTOR
+RED -> GREEN -> REFACTOR
 ```
 
 1. **RED**: Write failing test first (defines requirements)
-2. **GREEN**: Write minimum code to pass (implements requirements)  
+2. **GREEN**: Write minimum code to pass (implements requirements)
 3. **REFACTOR**: Improve code quality (maintains standards)
 
 **Why TDD is fundamental:**
 - Requirements clarity (tests force precise criteria)
 - Quality by design (can't mark "done" without tests)
 - Regression prevention (refactoring is safe)
-- Governance evidence (tests prove controls work)
-- Autonomous confidence (safety net for AI agents)
+- Governance evidence (tests produce system-verifiable evidence)
+- Agent-assisted confidence (safety net with enforced gates)
 
-### 3. PDL Governance ("Mapping Not Duplication")
+### 3. Control Objectives, Evidence, and Gates
+
+**Control Objectives (C-01 through C-10):** Define what must be true for every release. Controls are technology-agnostic and align to SOX, GxP, and ITGC. Controls range from change authorization (C-01) through cost/performance guardrails (C-10). See `docs/ASOM_CONTROLS.md` for the full catalog.
+
+**Evidence Ledger:** A formal, machine-verifiable index of control evidence. Evidence is produced only by authoritative systems (CI/CD, platform APIs, policy scanners). Agents may reference evidence but cannot generate, modify, or certify it.
+
+**Promotion Gates (G1 through G4):**
+
+| Gate | Trigger | Purpose |
+|------|---------|---------|
+| **G1** | PR Merge | Prevent untracked / untested changes |
+| **G2** | Release Candidate | Ensure release readiness and CRQ linkage |
+| **G3** | Promote to QA | Enforce controls + human approval |
+| **G4** | Promote to PROD | Enforce final approval + PROD-specific controls |
+
+Gates are deterministic and machine-enforced. A gate allows or blocks -- it does not recommend.
+
+### 4. PDL Governance ("Mapping Not Duplication")
 
 **Project Documentation List (PDL)** = regulatory/audit artefacts required for compliance
 
@@ -122,7 +150,7 @@ Every PDL item must be:
 
 See [PDL-REFERENCE.md](PDL-REFERENCE.md) for complete workflow.
 
-### 4. Scrum Methodology
+### 5. Scrum Methodology
 
 Standard Scrum practices:
 - 2-week sprints with clear goals
@@ -131,7 +159,7 @@ Standard Scrum practices:
 - Definition of Ready and Definition of Done
 - PDL tracking integrated into backlog
 
-### 5. Governance by Default
+### 6. Governance by Default
 
 Every story includes:
 - PII protection requirements
@@ -167,6 +195,14 @@ asom-framework/
 │   ├── audit-logging.md            # Audit trail requirements
 │   ├── git-workflow.md             # Version control best practices
 │   └── governance-requirements.md  # Compliance requirements
+│
+├── docs/                            # Governance and control specifications
+│   └── ASOM_CONTROLS.md            # Control catalog, evidence ledger, gates, SoD
+│
+├── src/                             # Application source code
+├── tests/                           # Test suites (unit, integration, DQ, governance)
+├── evidence/                        # Evidence ledger storage (append-only)
+├── scripts/                         # CI/CD and automation scripts
 │
 ├── ASOM.md                          # Framework philosophy and principles
 ├── README.md                        # This file
@@ -233,23 +269,23 @@ ASOM is designed for data engineering with Python and Snowflake, but principles 
    ├─ T003 (Security Assessment)
    └─ T004 (Privacy Impact Assessment)
 
-6. Governance Agent: QA Gate Review
-   ├─ Validates PDL 100% complete
-   ├─ Checks all governance controls tested
-   ├─ DECISION: APPROVE or HOLD
-   └─ If approved → Deploy to QA
+6. Governance Agent: QA Gate Verification (G3)
+   ├─ Verifies PDL 100% complete
+   ├─ Verifies all applicable controls have evidence
+   ├─ VERIFICATION STATUS: All controls satisfied or Incomplete
+   └─ Human QA approval required via ServiceNow
 
 7. QA Deployment
-   └─ System deployed to QA environment
+   └─ G3 passed → System deployed to QA environment
 
-8. Governance Agent: PROD Gate Review
+8. Governance Agent: PROD Gate Verification (G4)
    ├─ Re-validates PDL completeness
-   ├─ Confirms PROD-specific items (CRQ, etc.)
-   ├─ DECISION: APPROVE or REJECT
-   └─ If approved → Deploy to PROD
+   ├─ Confirms PROD-specific evidence (CRQ, observability, etc.)
+   ├─ VERIFICATION STATUS: All controls satisfied or Incomplete
+   └─ Human PROD approval required via ServiceNow
 
 9. Story Complete
-   └─ Status: Done (100% PDL, all tests passing)
+   └─ Status: Done (100% PDL, all tests passing, evidence ledger complete, gates passed)
 ```
 
 **Key Insight:** PDL tasks are created at epic start and completed throughout the sprint, NOT as a last-minute scramble.
@@ -264,10 +300,10 @@ Clear handoff protocols ensure smooth flow:
 BA → Governance:    Story refined, needs governance review
 Governance → Dev:   Story approved, ready for development
 Dev → QA:           PR created, needs testing
-QA → Governance:    Tests passing, needs governance certification
-Governance → QA:    PDL complete, approved for QA deployment
-QA → Governance:    QA validated, needs PROD approval
-Governance → Done:  PROD approved, compliance certified
+QA → Governance:    Tests passing, needs governance verification
+Governance → QA:    PDL verified, human approval required for QA (G3)
+QA → Governance:    QA validated, needs PROD verification
+Governance → Done:  PROD verified, human approval recorded, G4 passed
 ```
 
 **Workflow States:**
@@ -299,6 +335,8 @@ A story is "Done" when:
 - [ ] Audit logging verified
 - [ ] Access controls tested
 - [ ] No compliance violations
+- [ ] Evidence ledger entries exist for all applicable controls (produced by CI/CD)
+- [ ] All applicable gates passed (G1 through G4)
 
 **Documentation:**
 - [ ] Architecture Handbook updated (if architecture changed)
@@ -307,9 +345,9 @@ A story is "Done" when:
 - [ ] Traceability matrix current
 
 **Deployment:**
-- [ ] Governance QA gate passed
+- [ ] G3 gate passed (human QA approval via ServiceNow)
 - [ ] QA environment validated
-- [ ] Governance PROD gate passed
+- [ ] G4 gate passed (human PROD approval via ServiceNow)
 - [ ] Production deployment successful
 
 ---
@@ -466,7 +504,7 @@ Each project references a framework version:
 
 ```markdown
 # In project README.md
-ASOM Framework: v1.0.0
+ASOM Framework: v2.0.0
 ```
 
 ### Framework Updates
@@ -617,7 +655,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-ASOM was developed to enable autonomous, high-quality, compliant software development using AI agents while maintaining enterprise governance standards.
+ASOM was developed to enable agent-assisted, high-quality, compliant software development using AI agents while maintaining enterprise governance standards through enforced SDLC controls.
 
 **Built with:**
 - Anthropic Claude (AI agent orchestration)
@@ -627,6 +665,8 @@ ASOM was developed to enable autonomous, high-quality, compliant software develo
 
 ---
 
-**Remember:** ASOM = TDD + PDL + Agentic Roles + Scrum
+**Remember:** Agents assist. Systems enforce. Humans approve.
 
-Build production-ready data pipelines with complete governance, audit trails, and confidence. 🚀
+**ASOM = Agent-Assisted Scrum + TDD + Enforced Controls + Evidence Ledger**
+
+Build production-ready data pipelines with complete governance, audit trails, and confidence.

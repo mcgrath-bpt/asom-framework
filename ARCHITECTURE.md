@@ -1,18 +1,43 @@
 # Architecture Guide: AGENT.md vs SKILLS.md
 
+> **Agents assist. Systems enforce. Humans approve.**
+
 ## TL;DR
 
 - **AGENT.md**: "Who I am, what I do, how I decide, who I work with"
 - **SKILLS.md**: "How to accomplish specific technical tasks"
 
-Use **AGENT.md** when defining autonomous behaviour and decision-making.
+Use **AGENT.md** when defining agent-assisted behaviour and decision-making.
 Use **SKILLS.md** when codifying reusable technical knowledge and patterns.
+
+## Authority Model
+
+ASOM v2 operates on a three-tier authority model that governs what agents, systems, and humans are permitted to do:
+
+### Tier 1: Agents (Non-Authoritative)
+Agents draft artifacts, interpret requirements, surface gaps, and suggest remediation. Agents **cannot** approve, certify, promote, or generate evidence. All agent output is advisory until verified by a system or approved by a human.
+
+### Tier 2: Systems (Enforcement)
+Authoritative systems (CI/CD, Git, ServiceNow, Jira, platform policy engines) produce immutable evidence, enforce promotion gates (G1 through G4), and validate separation of duties. Systems are deterministic -- they allow or block, they do not recommend.
+
+### Tier 3: Humans (Approval)
+Humans hold final authority for promotion decisions (QA and PROD), CRQ approval, exception handling, and risk acceptance. Human approval must be recorded in authoritative systems (ServiceNow), not in agent conversations or documentation.
+
+**Architectural rule:** When adding new agents to the framework, every AGENT.md must define explicit authority boundaries -- what the agent may draft, what the agent must not approve, and which systems enforce the boundary.
+
+### Architectural Artifacts
+
+The control enforcement model is defined in `docs/ASOM_CONTROLS.md`, which consolidates:
+- Control Catalog (C-01 through C-10)
+- Evidence Ledger Specification
+- Promotion Gate Rules (G1 through G4)
+- Separation of Duties Matrix
 
 ## Detailed Comparison
 
 ### AGENT.md Files
 
-**Purpose**: Define an autonomous agent's identity, responsibilities, and decision-making framework.
+**Purpose**: Define an agent's identity, responsibilities, decision-making framework, and authority boundaries.
 
 **Contains**:
 - Role identity and purpose
@@ -40,9 +65,9 @@ Use **SKILLS.md** when codifying reusable technical knowledge and patterns.
 
 **When to Use**:
 - Defining a new agent role
-- Specifying autonomous decision-making rules
+- Specifying agent-assisted decision-making rules
 - Establishing agent coordination protocols
-- Setting role boundaries and responsibilities
+- Setting role boundaries, responsibilities, and authority boundaries
 
 **Characteristics**:
 - Role-specific (unique to each agent)
@@ -321,9 +346,10 @@ This design is **modular and scalable**:
 ### Adding Agents
 When adding a new agent role:
 1. Create new AGENT.md defining the role
-2. Reference existing relevant SKILLS.md files
-3. Update other AGENT.md files for coordination
-4. Don't duplicate technical content - reference skills
+2. **Define explicit authority boundaries** -- what the agent may draft, what it must not approve, and which systems enforce the boundary
+3. Reference existing relevant SKILLS.md files
+4. Update other AGENT.md files for coordination
+5. Don't duplicate technical content - reference skills
 
 ### Adding Skills
 When adding a new skill:
@@ -342,7 +368,7 @@ When adding a new skill:
 
 | Aspect | AGENT.md | SKILLS.md |
 |--------|----------|-----------|
-| **Purpose** | Define autonomous behaviour | Codify technical knowledge |
+| **Purpose** | Define agent-assisted behaviour | Codify technical knowledge |
 | **Scope** | Role-specific | Domain-specific |
 | **Content** | Who, when, why | How, what |
 | **Reuse** | One per role | Many agents reference |
