@@ -670,7 +670,41 @@ An auditor should be able to:
 
 ---
 
-## 7. Versioning
+## 7. Assumptions & Residual Risks
+
+ASOM makes the following assumptions explicit. When these assumptions do not hold, ASOM's compliance guarantees are weakened. Implementers must validate these assumptions for their environment and document compensating controls where gaps exist.
+
+### Assumption 1: CI/CD is Reliable and Authoritative
+
+ASOM treats CI/CD pipelines as the authoritative source of evidence. This assumes:
+- Pipelines execute deterministically and produce consistent results
+- Build logs and artifacts are retained and immutable
+- Manual reruns are logged and traceable
+- Pipeline failures are surfaced, not silently swallowed
+
+**Residual risk:** If CI/CD is unreliable (fragile builds, lost logs, manual reruns without audit trail), evidence integrity cannot be guaranteed. Organisations with immature CI/CD should invest in pipeline reliability before adopting ASOM evidence requirements.
+
+### Assumption 2: Requirements Tooling is Trustworthy
+
+ASOM assumes that the requirements system (Jira or equivalent) contains accurate, maintained requirements with genuine acceptance criteria. If requirements are a dumping ground of stale tickets, traceability (C-03) becomes meaningless.
+
+**Residual risk:** Poor requirements hygiene undermines traceability controls regardless of framework rigour. BA Agent effectiveness depends on the quality of input from the Product Owner and the discipline of the backlog.
+
+### Assumption 3: Human Approvers Act in Good Faith
+
+ASOM enforces separation of duties technically (author ≠ approver ≠ deployer), but cannot enforce the quality of human review. If CRQ approvals are rubber-stamped, the control exists in form but not in substance.
+
+**Residual risk:** Rubber-stamped approvals are a residual risk in any governance framework. ASOM mitigates this through evidence transparency (the approver can see exactly what they are approving) but cannot eliminate it.
+
+### Assumption 4: Agent Outputs Are Advisory, Not Relied Upon Without Review
+
+ASOM agents draft artifacts, surface gaps, and recommend actions. Organisations must not treat agent outputs as authoritative without human review. If teams blindly accept agent-drafted stories, code, or verification reports, the human accountability layer is bypassed in practice even if gates technically pass.
+
+**Residual risk:** Over-reliance on agent outputs reduces the effectiveness of human oversight. Regular retrospectives should assess whether human reviewers are genuinely reviewing or passively accepting agent recommendations.
+
+---
+
+## 8. Versioning
 
 - Control Catalog, Evidence Ledger schema, Gate Rules, and SoD Rules are all versioned
 - Changes require architecture and governance approval

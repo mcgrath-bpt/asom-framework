@@ -1,43 +1,40 @@
+# ASOM v2 -- Jira Issue Templates & Required Fields
 
-JIRA_TEMPLATES.md
+---
 
-ASOM v2 – Jira Issue Templates & Required Fields
-
-⸻
-
-1. Purpose
+## 1. Purpose
 
 These Jira templates ensure that:
-	•	requirements are testable
-	•	scope is explicit
-	•	controls are traceable
-	•	evidence linkage is automatic
-	•	governance friction is minimised
+- requirements are testable
+- scope is explicit
+- controls are traceable
+- evidence linkage is automatic
+- governance friction is minimised
 
-Principle:
-If it isn’t captured in Jira, it doesn’t exist.
+**Principle:** If it isn't captured in Jira, it doesn't exist.
 
-⸻
+---
 
-2. Required Jira Issue Types
+## 2. Required Jira Issue Types
 
 ASOM v2 assumes the following Jira issue types:
-	•	Epic
-	•	Story
-	•	Bug
-	•	Release (or Release Epic)
+- Epic
+- Story
+- Bug
+- Release (or Release Epic)
 
 Each has mandatory fields aligned to controls and gates.
 
-⸻
+---
 
-3. Epic Template (Control-Scoped)
+## 3. Epic Template (Control-Scoped)
 
-Issue Type: Epic
-Purpose: Define business scope and control applicability
+**Issue Type:** Epic
+**Purpose:** Define business scope and control applicability
 
-Epic Description Template
+### Epic Description Template
 
+```markdown
 ## Business Objective
 <What problem is being solved?>
 
@@ -67,21 +64,23 @@ Epic Description Template
 ## Release Target
 - Planned release window:
 - Target environments: QA / PROD
+```
 
-Mandatory Fields
-	•	Business owner
-	•	Data owner (if applicable)
-	•	Planned release
+**Mandatory Fields:**
+- Business owner
+- Data owner (if applicable)
+- Planned release
 
-⸻
+---
 
-4. Story Template (Test-First)
+## 4. Story Template (Test-First)
 
-Issue Type: Story
-Purpose: Deliver testable, traceable change
+**Issue Type:** Story
+**Purpose:** Deliver testable, traceable change
 
-Story Description Template
+### Story Description Template
 
+```markdown
 ## User Story
 As a <role>
 I want <capability>
@@ -108,22 +107,24 @@ So that <business value>
 - Tests implemented
 - Tests executed in CI
 - Evidence generated
+```
 
-Mandatory Fields
-	•	Linked Epic
-	•	Acceptance Criteria
-	•	Test Categories (at least one)
-	•	Control Mapping
+**Mandatory Fields:**
+- Linked Epic
+- Acceptance Criteria
+- Test Categories (at least one)
+- Control Mapping
 
-⸻
+---
 
-5. Bug Template (Governed)
+## 5. Bug Template (Governed)
 
-Issue Type: Bug
-Purpose: Correct defects without bypassing controls
+**Issue Type:** Bug
+**Purpose:** Correct defects without bypassing controls
 
-Bug Description Template
+### Bug Description Template
 
+```markdown
 ## Defect Description
 <What is wrong?>
 
@@ -148,22 +149,24 @@ Bug Description Template
 
 ## Tests Required
 <List test categories>
+```
 
-Rules
-	•	Bugs promoted beyond DEV still require:
-	•	tests
-	•	evidence
-	•	CRQ inclusion
+**Rules:**
+- Bugs promoted beyond DEV still require:
+  - tests
+  - evidence
+  - CRQ inclusion
 
-⸻
+---
 
-6. Release Issue Template (CRQ-Centric)
+## 6. Release Issue Template (CRQ-Centric)
 
-Issue Type: Release
-Purpose: Aggregate scope and approvals
+**Issue Type:** Release
+**Purpose:** Aggregate scope and approvals
 
-Release Description Template
+### Release Description Template
 
+```markdown
 ## Release Summary
 <High-level summary>
 
@@ -182,70 +185,70 @@ Release Description Template
 ## Environments
 - QA target date:
 - PROD target date:
+```
 
-Mandatory Fields
-	•	CRQ ID
-	•	Linked Epics
-	•	Target environments
+**Mandatory Fields:**
+- CRQ ID
+- Linked Epics
+- Target environments
 
-⸻
+---
 
-7. Workflow Expectations (High-Level)
+## 7. Workflow Expectations (High-Level)
 
-Story Workflow
+### Story Workflow
 
+```
 Backlog → Ready → In Progress → Code Review → Done
+```
 
-Rules:
-	•	Cannot move to Done without:
-	•	tests passing
-	•	evidence generated
+**Rules:**
+- Cannot move to Done without:
+  - tests passing
+  - evidence generated
 
-⸻
+---
 
-Release Workflow
+### Release Workflow
 
+```
 Draft → QA Approval Pending → QA Approved → PROD Approval Pending → Released
+```
 
-Rules:
-	•	Transitions to approval states require:
-	•	CRQ state validation
-	•	evidence completeness
+**Rules:**
+- Transitions to approval states require:
+  - CRQ state validation
+  - evidence completeness
 
-⸻
+---
 
-8. Automation Rules (Conceptual)
+## 8. Automation Rules (Conceptual)
 
 Recommended Jira automation (conceptual):
-	•	Block transition to Done if:
-	•	Acceptance Criteria empty
-	•	Test Categories not selected
-	•	Warn if:
-	•	Control mapping missing
-	•	Sync Release status with CRQ state (read-only)
+- Block transition to Done if:
+  - Acceptance Criteria empty
+  - Test Categories not selected
+- Warn if:
+  - Control mapping missing
+- Sync Release status with CRQ state (read-only)
 
-⸻
+---
 
-9. Anti-Patterns (Explicit)
+## 9. Anti-Patterns (Explicit)
 
 The following are non-compliant:
-	•	stories without acceptance criteria
-	•	“test later” stories
-	•	release issues without CRQ
-	•	bugs bypassing test requirements
-	•	manual status changes to bypass gates
+- stories without acceptance criteria
+- "test later" stories
+- release issues without CRQ
+- bugs bypassing test requirements
+- manual status changes to bypass gates
 
-⸻
+---
 
-10. Why This Works
-	•	Engineers know what’s expected
-	•	Governance gets structured data
-	•	CI/CD can enforce rules
-	•	Audit traceability is automatic
-	•	ASOM overhead stays minimal
+## 10. Why This Works
 
-⸻
-
-✅ JIRA_TEMPLATES.md — COMPLETE
-
-⸻
+- Engineers know what's expected
+- Governance gets structured data
+- CI/CD can enforce rules
+- Audit traceability is automatic
+- ASOM overhead stays minimal

@@ -16,6 +16,8 @@ The Dev Agent is a **non-authoritative** role. You implement, test, and document
 - All PRs must satisfy **G1 gate requirements** before merge: linked Jira story, acceptance criteria present, unit tests executed, contract/schema tests executed, no failing tests, evidence entries created by CI (see `docs/ASOM_CONTROLS.md`)
 - If a **C-11 emergency override** is invoked, you may still be required to produce deferred evidence (tests, documentation) within the remediation window
 
+*This agent provides recommendations only. It does not approve, certify, promote, or generate compliance evidence.*
+
 ## Core Responsibilities
 
 ### Test-Driven Development (MANDATORY)

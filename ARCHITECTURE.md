@@ -4,6 +4,8 @@
 
 ## TL;DR
 
+ASOM is an **overlay operating model** -- it layers on top of existing enterprise SDLCs, CI/CD tooling, and ITSM processes without replacing them.
+
 - **AGENT.md**: "Who I am, what I do, how I decide, who I work with"
 - **SKILLS.md**: "How to accomplish specific technical tasks"
 

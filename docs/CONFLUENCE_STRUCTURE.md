@@ -1,29 +1,24 @@
+# ASOM v2 -- Confluence Information Architecture & Templates
 
-CONFLUENCE_STRUCTURE.md
+---
 
-ASOM v2 – Confluence Information Architecture & Templates
-
-⸻
-
-1. Purpose
+## 1. Purpose
 
 This document defines how ASOM v2 lives in Confluence so that:
-	•	auditors find what they expect
-	•	engineers are not overwhelmed
-	•	governance is visible but not obstructive
-	•	documentation stays aligned with reality
-	•	duplication is avoided (PDL = mapping, not rewriting)
+- auditors find what they expect
+- engineers are not overwhelmed
+- governance is visible but not obstructive
+- documentation stays aligned with reality
+- duplication is avoided (PDL = mapping, not rewriting)
 
-⸻
+---
 
-2. Top-Level Confluence Space Structure
+## 2. Top-Level Confluence Space Structure
 
-ASOM v2 – Delivery & Governance Hub
+**ASOM v2 -- Delivery & Governance Hub** (single space or top-level page)
 
-(single space or top-level page)
-
-```text
-ASOM v2 – Delivery & Governance Hub
+```
+ASOM v2 -- Delivery & Governance Hub
 ├── 1. What is ASOM v2 (Read First)
 ├── 2. Operating Model
 ├── 3. Controls & Governance
@@ -32,81 +27,82 @@ ASOM v2 – Delivery & Governance Hub
 ├── 6. Exceptions & Decisions
 └── 7. Reference & Templates
 ```
+
 This mirrors how Audit + Engineering mentally navigate.
 
-⸻
+---
 
-3. Page-by-Page Breakdown
+## 3. Page-by-Page Breakdown
 
-⸻
+---
 
-1. What is ASOM v2 (Read First)
+### 3.1 What is ASOM v2 (Read First)
 
-Audience: Everyone
-Purpose: Set tone, scope, and non-goals
+**Audience:** Everyone
+**Purpose:** Set tone, scope, and non-goals
 
-Content
-	•	What ASOM v2 is
-	•	What ASOM v2 is not
-	•	“Agents assist. Systems enforce. Humans approve.”
-	•	Link to Audit Walkthrough
+**Content:**
+- What ASOM v2 is
+- What ASOM v2 is not
+- "Agents assist. Systems enforce. Humans approve."
+- Link to Audit Walkthrough
 
 This page prevents 80% of misunderstandings.
 
-⸻
+---
 
-2. Operating Model
+### 3.2 Operating Model
 
-Sub-pages:
-	•	ASOM v2 Overview
-	•	Roles & Responsibilities
-	•	Separation of Duties
-	•	Promotion Flow (DEV → QA → PROD)
+**Sub-pages:**
+- ASOM v2 Overview
+- Roles & Responsibilities
+- Separation of Duties
+- Promotion Flow (DEV → QA → PROD)
 
 Each page:
-	•	links to the canonical spec in Git
-	•	summarises intent, not mechanics
+- links to the canonical spec in Git
+- summarises intent, not mechanics
 
-⸻
+---
 
-3. Controls & Governance
+### 3.3 Controls & Governance
 
-Sub-pages:
-	•	Control Catalog
-	•	Evidence Ledger
-	•	Gate Rules
-	•	How ASOM Fails
+**Sub-pages:**
+- Control Catalog
+- Evidence Ledger
+- Gate Rules
+- How ASOM Fails
 
 This section is audit-facing.
 
 Each control page should include:
-	•	control objective
-	•	risk
-	•	evidence expectations
-	•	links to live examples
+- control objective
+- risk
+- evidence expectations
+- links to live examples
 
-⸻
+---
 
-4. Delivery Playbooks
+### 3.4 Delivery Playbooks
 
-Sub-pages:
-	•	How to Start a New Feature
-	•	How to Prepare a Release
-	•	How to Fix a Failed Gate
-	•	How to Handle Emergency Changes
+**Sub-pages:**
+- How to Start a New Feature
+- How to Prepare a Release
+- How to Fix a Failed Gate
+- How to Handle Emergency Changes
 
-Audience: engineers & delivery leads
-Tone: practical, step-by-step
+**Audience:** engineers & delivery leads
+**Tone:** practical, step-by-step
 
-⸻
+---
 
-5. Release & Audit Evidence
+### 3.5 Release & Audit Evidence
 
 This is where PDL mapping happens.
 
-Structure:
+**Structure:**
 
-```text
+```
 Release YYYY-MM-DD (CRQ-XXXX)
 ├── Release Overview
 ├── Scope (Jira links)
@@ -115,38 +111,38 @@ Release YYYY-MM-DD (CRQ-XXXX)
 └── Approval Summary
 ```
 
-No screenshots.
-Everything links back to systems of record.
+No screenshots. Everything links back to systems of record.
 
-⸻
+---
 
-6. Exceptions & Decisions
+### 3.6 Exceptions & Decisions
 
-Sub-pages:
-	•	Exceptions Register
-	•	Architecture Decision Records (ADRs)
+**Sub-pages:**
+- Exceptions Register
+- Architecture Decision Records (ADRs)
 
 This is where:
-	•	risk acceptance lives
-	•	deviations are documented
-	•	auditors look when something went “off script”
+- risk acceptance lives
+- deviations are documented
+- auditors look when something went "off script"
 
-⸻
+---
 
-7. Reference & Templates
+### 3.7 Reference & Templates
 
-Sub-pages:
-	•	Jira templates
-	•	Confluence templates
-	•	Glossary
-	•	v1 → v2 delta
+**Sub-pages:**
+- Jira templates
+- Confluence templates
+- Glossary
+- v1 → v2 delta
 
-⸻
+---
 
-4. Core Confluence Page Templates
+## 4. Core Confluence Page Templates
 
-4.1 Release Overview Template
+### 4.1 Release Overview Template
 
+```markdown
 # Release: <Release Name>
 
 ## CRQ
@@ -166,43 +162,46 @@ Sub-pages:
 ## Status
 - QA Approval: Pending / Approved
 - PROD Approval: Pending / Approved
+```
 
+---
 
-⸻
+### 4.2 Control Coverage Template
 
-4.2 Control Coverage Template
-
+```markdown
 # Control Coverage
 
 | Control ID | Applicable | Evidence | Status |
-|---|---|---|---|
+|------------|------------|----------|--------|
 | C-01 | Yes | EL-2026-001 | Pass |
 | C-05 | Yes | EL-2026-015 | Pass |
 | C-10 | No | N/A (Justified) | Approved |
 
 ## Notes
 <N/A justifications or exceptions>
+```
 
+---
 
-⸻
+### 4.3 Evidence Reference Template
 
-4.3 Evidence Reference Template
-
+```markdown
 # Evidence References
 
 All evidence is stored in authoritative systems.
 This page provides references only.
 
 | Evidence ID | Control | Source |
-|---|---|---|
+|-------------|---------|--------|
 | EL-2026-015 | C-05 | CI Artifact build-789 |
 | EL-2026-016 | C-06 | CI Artifact build-789 |
+```
 
+---
 
-⸻
+### 4.4 Exception Template
 
-4.4 Exception Template
-
+```markdown
 # Exception Record
 
 ## Exception ID
@@ -226,30 +225,25 @@ SNOW-CRQ-900001
 
 ## Expiry
 <date or condition>
+```
 
+---
 
-⸻
-
-5. Confluence Guardrails (Very Important)
+## 5. Confluence Guardrails (Very Important)
 
 To keep this sustainable:
-	•	❌ No screenshots as evidence
-	•	❌ No copy/paste of CI logs
-	•	❌ No duplicated approval statements
-	•	✅ Always link to systems of record
-	•	✅ Treat Confluence as narrative + index, not storage
+- ❌ No screenshots as evidence
+- ❌ No copy/paste of CI logs
+- ❌ No duplicated approval statements
+- ✅ Always link to systems of record
+- ✅ Treat Confluence as narrative + index, not storage
 
-⸻
+---
 
-6. Why This Structure Works
-	•	Engineers see playbooks
-	•	Governance sees controls
-	•	Audit sees evidence traceability
-	•	Leadership sees consistency
-	•	ASOM remains lightweight but defensible
+## 6. Why This Structure Works
 
-⸻
-
-✅ CONFLUENCE_STRUCTURE.md — COMPLETE
-
-⸻
+- Engineers see playbooks
+- Governance sees controls
+- Audit sees evidence traceability
+- Leadership sees consistency
+- ASOM remains lightweight but defensible

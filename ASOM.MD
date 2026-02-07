@@ -4,13 +4,13 @@
 
 ## What is ASOM?
 
-**ASOM (Agentic Scrum Operating Model)** is an operating model for building production-quality data engineering and data science solutions using agent-assisted delivery under enforced SDLC controls, with Test-Driven Development (TDD) as a fundamental practice.
+**ASOM (Agentic Scrum Operating Model)** is an overlay operating model for introducing agent-assisted delivery into regulated enterprise SDLCs. It is designed for building production-quality data engineering and data science solutions under enforced SDLC controls, with Test-Driven Development (TDD) as a fundamental practice. ASOM layers on top of existing tools and processes -- it does not replace them.
 
 ## What ASOM Is / Is Not
 
 **ASOM IS:**
 - An **operating model** defining roles, responsibilities, and control boundaries for agent-assisted data delivery
-- A set of **enforced SDLC controls** (C-01 through C-10) verified by authoritative systems
+- A set of **enforced SDLC controls** (C-01 through C-11) verified by authoritative systems
 - A **governance framework** where evidence is produced by CI/CD, platforms, and policy engines -- not by agents
 - A **separation of duties model** where agents draft, systems enforce, and humans approve
 

@@ -11,7 +11,9 @@
 
 ## What is ASOM?
 
-ASOM (Agentic Scrum Operating Model) is an operating model for agent-assisted delivery under enforced SDLC controls. Agents draft and interpret artifacts, while authoritative systems (CI/CD, SCM, ticketing, policy engines) produce immutable evidence and enforce gates. ASOM is designed for regulated data platforms where separation of duties and auditability are mandatory.
+ASOM (Agentic Scrum Operating Model) is an **overlay operating model** for introducing agent-assisted delivery into regulated enterprise SDLCs. It is designed to be applied incrementally, alongside existing tools and processes, without replacing ITSM, CI/CD tooling, or organisational structures.
+
+Agents draft and interpret artifacts, while authoritative systems (CI/CD, SCM, ticketing, policy engines) produce immutable evidence and enforce gates. ASOM layers on top of your existing SDLC -- it does not replace it.
 
 AI agents accelerate -- but never bypass -- SDLC controls. Governance, auditability, and separation of duties are enforced by authoritative enterprise systems (Git, CI/CD, Jira, Confluence, ServiceNow).
 
@@ -134,8 +136,8 @@ Every PDL item must be:
 1. Governance performs PDL Impact Assessment at epic creation
 2. Creates tracking tasks (T001-T00N) assigned to appropriate agents
 3. Agents complete PDL tasks throughout sprint
-4. Governance validates 100% PDL completion before QA/PROD deployment
-5. Blocks deployment if PDL incomplete
+4. Governance checks PDL completion before QA/PROD deployment and surfaces gaps
+5. Blocks deployment if PDL incomplete (gate enforcement, not agent decision)
 
 **PDL Categories:**
 
@@ -258,12 +260,12 @@ ASOM is designed for data engineering with Python and Snowflake, but principles 
    ├─ Handles T002 (Architecture Handbook)
    └─ Handles T006 (ITOH update)
 
-4. QA Agent: Validates
-   ├─ Verifies TDD process followed
-   ├─ Executes all tests
-   ├─ Validates data quality thresholds
+4. QA Agent: Coordinates Validation
+   ├─ Checks TDD process was followed
+   ├─ Coordinates test execution
+   ├─ Checks data quality against thresholds
    ├─ Handles T005 (OQ test evidence)
-   └─ Generates traceability matrix
+   └─ Publishes traceability matrix
 
 5. Governance Agent: Completes Own Tasks
    ├─ T003 (Security Assessment)
@@ -468,7 +470,7 @@ See [QUICKSTART.md](QUICKSTART.md) for day-by-day walkthrough.
 **ASOM Solution:**
 - BA: Creates stories with PII requirements
 - Dev: Implements SHA256 masking (deterministic for joins)
-- QA: Validates no PII in curated layer
+- QA: Checks no PII in curated layer
 - Governance: DPIA, security assessment, PDL certification
 - Result: Audit-ready, GDPR-compliant pipeline
 
@@ -479,7 +481,7 @@ See [QUICKSTART.md](QUICKSTART.md) for day-by-day walkthrough.
 **ASOM Solution:**
 - BA: Documents data lineage requirements
 - Dev: Implements audit logging (who, what, when)
-- QA: Validates audit trail completeness
+- QA: Checks audit trail completeness
 - Governance: 7-year retention policy, PDL evidence
 - Result: SOX-compliant reporting with audit trail
 
