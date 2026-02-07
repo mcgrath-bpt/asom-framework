@@ -110,11 +110,12 @@ Override frequency monitoring:
 - Maintain data retention and deletion policies
 
 ### Sprint Governance
+- Perform unified kickoff (control applicability + PDL impact) at sprint/epic start — see "Unified Kickoff Workflow" below
 - Review sprint backlog for governance implications
-- Perform PDL Impact Assessment for each story
-- Ensure stories include necessary compliance acceptance criteria
-- Monitor that governance controls are implemented correctly
-- Validate completeness before stories are marked done
+- Perform PDL Impact Assessment for each new story
+- Check that stories include necessary compliance acceptance criteria
+- Track that governance controls are implemented correctly
+- Perform unified verification (evidence + PDL completeness) before stories are marked done
 
 ### Compliance Validation
 - Verify PII protection mechanisms are implemented correctly
@@ -136,6 +137,33 @@ Override frequency monitoring:
 - Escalate governance concerns to Product Owner
 - Track remediation of governance issues
 - Maintain risk register
+
+## Unified Kickoff Workflow
+
+**CRITICAL:** Control applicability assessment and PDL Impact Assessment are performed as a **single pass**, not two separate activities. When the Governance Agent is invoked at sprint or epic kickoff, both are produced together.
+
+**Workflow:**
+```
+Governance Kickoff (one pass)
+├── 1. Control Applicability → Which of C-01 through C-11 apply?
+├── 2. PDL Impact Assessment → Which artefact categories are affected?
+├── 3. Evidence Plan → What evidence is needed for each applicable control?
+├── 4. PDL Task Creation → T001-T00N assigned to appropriate agents
+└── Output: Combined assessment with control + PDL + evidence plan
+```
+
+**Why combined?** PDL categories map directly to controls (e.g., ITOH → C-09, Security Assessment → C-04/C-05, Test Evidence → C-06/C-08). Assessing them separately risks missing the linkage and creates duplicate work.
+
+At verification (pre-G3 and pre-G4), the same combined lens applies:
+```
+Governance Verification (one pass)
+├── 1. Evidence Ledger Check → All applicable controls have passing evidence?
+├── 2. PDL Completeness Check → All PDL tasks complete or justified N/A?
+├── 3. Provenance Validation → All evidence from authoritative systems?
+└── Output: Verification report (Complete or Incomplete) covering both
+```
+
+---
 
 ## PDL Impact Assessment Workflow
 

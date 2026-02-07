@@ -100,29 +100,29 @@ When the role is implicit, infer from the task type:
 Some requests require sequential agent involvement. Orchestrate automatically:
 
 **Pattern: "Build/Create [feature/pipeline]"** (Complete workflow)
-1. **Governance** → Control applicability assessment (C-01 through C-11), evidence plan
+1. **Governance** → Control applicability assessment (C-01 through C-11) + PDL Impact Assessment → evidence plan + PDL tracking tasks (T001-T00N)
 2. **BA** → Create stories with acceptance criteria and test requirements
-3. **Scrum Master** → Validate Definition of Ready
-4. **Dev** → Implement each story (TDD). Evidence entries created by CI.
-5. **QA** → Coordinate validation, publish QA execution report
-6. **Governance** → Verify evidence completeness, surface gaps for human review
-7. **Scrum Master** → Track progress and update metrics
-8. **→ Gate G3:** Human approval required for QA promotion (or C-11 emergency override with deferred evidence)
-9. **→ Gate G4:** Human approval required for PROD promotion (or C-11 emergency override with deferred evidence)
+3. **Scrum Master** → Validate Definition of Ready (including PDL task coverage)
+4. **Dev** → Implement each story (TDD). Evidence entries created by CI. Complete assigned PDL tasks (architecture, ITOH).
+5. **QA** → Coordinate validation, publish QA execution report. Complete assigned PDL tasks (OQ evidence, traceability).
+6. **Governance** → Verify evidence completeness + PDL completeness, surface gaps for human review
+7. **Scrum Master** → Track progress and update metrics (including PDL completion %)
+8. **→ Gate G3:** Human approval required for QA promotion (or C-11 emergency override with deferred evidence). PDL must be 100% complete.
+9. **→ Gate G4:** Human approval required for PROD promotion (or C-11 emergency override with deferred evidence). PDL re-validated.
 
 **Pattern: "Implement [story]"** (Development workflow)
-1. **Dev** → Implement solution with TDD. PR submitted.
+1. **Dev** → Implement solution with TDD. PR submitted. Complete any assigned PDL tasks (architecture, ITOH).
 2. **→ Gate G1:** PR merge requires linked Jira, passing tests, evidence entries
-3. **QA** → Coordinate validation against acceptance criteria
-4. **Governance** → Verify evidence completeness, publish verification report
-5. **Scrum Master** → Update story status
+3. **QA** → Coordinate validation against acceptance criteria. Complete any assigned PDL tasks (OQ evidence, traceability).
+4. **Governance** → Verify evidence + PDL completeness, publish verification report
+5. **Scrum Master** → Update story status (including PDL task status)
 6. **→ Human action:** Release Approver reviews for promotion
 
 **Pattern: "Start sprint"** (Sprint planning workflow)
 1. **Scrum Master** → Acknowledge sprint goal
-2. **Governance** → Control applicability assessment for sprint scope
+2. **Governance** → Unified kickoff: control applicability + PDL Impact Assessment → evidence plan + PDL tasks
 3. **BA** → Create/refine stories with test requirements
-4. **Scrum Master** → Validate Definition of Ready and create sprint plan
+4. **Scrum Master** → Validate Definition of Ready (including PDL task coverage) and create sprint plan
 
 ---
 
@@ -137,14 +137,31 @@ Claude Response:
 
 Sprint Goal: Build customer data pipeline with PII governance
 
-Step 1: Control applicability assessment
+Step 1: Control applicability + PDL Impact Assessment
 [Switching to Governance Agent]
 
-[Governance Agent] Performing control applicability assessment for Sprint 1...
+[Governance Agent] Performing unified kickoff assessment for Sprint 1...
+
+Control Applicability:
 Applicable controls: C-01 (Change Auth), C-02 (SoD), C-03 (Traceability),
   C-04 (Data Classification), C-05 (Access Control), C-06 (DQ), C-07 (Reproducibility)
 Evidence plan: 7 controls require evidence before G3 (QA promotion)
-PDL tasks created and assigned to appropriate agents
+
+PDL Impact Assessment:
+├─ Requirements: PRODUCED (via stories + ACs) | C-03
+├─ Architecture Handbook: UPDATE REQUIRED | C-03
+│  └─ T001 → Dev Agent
+├─ Security Assessment: N/A (no PII in scope) | C-04
+├─ Test Strategy: REFERENCED (Master v2.1) | C-06, C-08
+├─ IQ Evidence: PRODUCED (via TDD) | C-06
+├─ OQ Evidence: REQUIRED | C-06
+│  └─ T002 → QA Agent
+├─ ITOH: UPDATE REQUIRED | C-09
+│  └─ T003 → Dev Agent
+└─ Change Request: PRODUCED (at G3) | C-01
+
+PDL Tasks: T001-T003 created and assigned
+PDL Status: 40% complete (3 tasks to track, 5 items auto-produced)
 
 Step 2: Story creation
 [Switching to BA Agent]
@@ -161,6 +178,7 @@ Step 3: Sprint planning
 - Duration: 2 weeks
 - Gate readiness: G1 per PR, G3 at sprint end
 - Evidence plan: 7 controls to satisfy
+- PDL plan: 3 tasks tracked (T001-T003), 5 items auto-produced
 - Risks: None identified
 
 Sprint 1 ready to begin. Next: Dev Agent to implement S001.
@@ -236,7 +254,7 @@ Note: Human QA Engineer should review QA execution report
 User: "Verify S001"
 
 Claude Response:
-[Governance Agent] Verifying evidence completeness for S001
+[Governance Agent] Verifying evidence + PDL completeness for S001
 
 Evidence Ledger Check (applicable controls):
 - C-03 (Traceability): Jira S001 linked to PR #123, AC present
@@ -245,9 +263,19 @@ Evidence Ledger Check (applicable controls):
 - C-06 (DQ Controls): DQ test results in ledger (CI-generated)
 - C-07 (Reproducibility): Commit SHA and build config recorded
 
-Verification Status: All applicable controls have passing evidence
+PDL Completeness Check:
+- T001 (Architecture Handbook): ✅ Complete — Confluence page updated, linked to repo
+- T002 (OQ Evidence): ✅ Complete — business rule tests passing
+- T003 (ITOH): ⚠️ INCOMPLETE — monitoring procedures not yet documented
+- Auto-produced items: ✅ Requirements, IQ, Traceability, CRQ all present
+
+Evidence Status: All applicable controls have passing evidence
+PDL Status: Incomplete — T003 (ITOH) outstanding
 Evidence Provenance: All entries produced by CI pipeline (authoritative)
-Gaps: None identified
+
+VERIFICATION STATUS: Incomplete
+REASON: PDL task T003 (ITOH update) required before G3
+RECOMMENDATION: Dev Agent to complete T003, then re-verify
 
 Note: This is a verification report, not an approval.
 Human Governance/Quality reviewer should confirm.
@@ -279,6 +307,7 @@ Story Status:
 Gate Readiness (G3 -- QA promotion):
 - Evidence: 5/7 controls satisfied
 - Remaining: C-09 (Observability), C-10 (Cost guardrails) -- pending S004, S005
+- PDL: 2/3 tasks complete (T003 ITOH outstanding -- assigned to Dev)
 - CRQ: SNOW-CRQ-001 created, pending approval
 - Human approval: Not yet requested
 
