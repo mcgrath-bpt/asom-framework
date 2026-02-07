@@ -45,7 +45,7 @@ Description:
 ```
 Load agents/GOVERNANCE-AGENT.md and skills/pdl-governance.md
 
-Perform Control Applicability Assessment for Epic E001 (referencing C-01 through C-10)
+Perform Control Applicability Assessment for Epic E001 (referencing C-01 through C-11)
 ```
 
 **Governance Agent assesses control applicability and creates PDL tasks:**

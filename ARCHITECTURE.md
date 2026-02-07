@@ -28,7 +28,7 @@ Humans hold final authority for promotion decisions (QA and PROD), CRQ approval,
 ### Architectural Artifacts
 
 The control enforcement model is defined in `docs/ASOM_CONTROLS.md`, which consolidates:
-- Control Catalog (C-01 through C-10)
+- Control Catalog (C-01 through C-11)
 - Evidence Ledger Specification
 - Promotion Gate Rules (G1 through G4)
 - Separation of Duties Matrix

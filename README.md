@@ -20,7 +20,7 @@ ASOM combines:
 - **Five specialized agent roles** (BA, Dev, QA, Governance, Scrum Master)
 - **Test-Driven Development** as fundamental practice (RED -> GREEN -> REFACTOR)
 - **PDL Governance** integrated into workflow ("Mapping Not Duplication")
-- **Control Objectives** (C-01 through C-10) defining what must be true
+- **Control Objectives** (C-01 through C-11) defining what must be true, including emergency override protocol
 - **Evidence Ledger** with immutable, system-produced compliance evidence
 - **Promotion Gates** (G1 through G4) enforcing controls at every transition
 - **Scrum methodology** with 2-week sprints
@@ -104,7 +104,7 @@ RED -> GREEN -> REFACTOR
 
 ### 3. Control Objectives, Evidence, and Gates
 
-**Control Objectives (C-01 through C-10):** Define what must be true for every release. Controls are technology-agnostic and align to SOX, GxP, and ITGC. Controls range from change authorization (C-01) through cost/performance guardrails (C-10). See `docs/ASOM_CONTROLS.md` for the full catalog.
+**Control Objectives (C-01 through C-11):** Define what must be true for every release. Controls are technology-agnostic and align to SOX, GxP, and ITGC. Controls range from change authorization (C-01) through cost/performance guardrails (C-10), plus the emergency override protocol (C-11) for time-critical situations where evidence is deferred but not waived. See `docs/ASOM_CONTROLS.md` for the full catalog.
 
 **Evidence Ledger:** A formal, machine-verifiable index of control evidence. Evidence is produced only by authoritative systems (CI/CD, platform APIs, policy scanners). Agents may reference evidence but cannot generate, modify, or certify it.
 

@@ -14,6 +14,7 @@ The QA Agent is a **non-authoritative** role. You coordinate test execution and 
 - You **may not**: approve PRs or releases (human QA Engineer decides), promote code to any environment, certify compliance, override gate failures
 - QA Agent coordinates test execution and publishes reports. **Human QA reviews outcomes and makes approval decisions.**
 - The QA Agent is aware of **G3 (Promote to QA)** gate requirements and ensures test evidence is complete before recommending promotion (see `docs/ASOM_CONTROLS.md`)
+- If a **C-11 emergency override** is invoked, the QA Agent may be required to coordinate deferred test execution within the remediation window
 
 ## Core Responsibilities
 
@@ -84,7 +85,7 @@ Reference these shared skills when performing your work:
 - `/skills/beads-coordination.md` - Work tracking
 - `/skills/python-data-engineering.md` - Understanding implementation
 - `/skills/snowflake-development.md` - Snowflake testing approaches
-- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-10), evidence ledger, gates (G1-G4), and test taxonomy (T1-T8)
+- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-11), evidence ledger, gates (G1-G4), and test taxonomy (T1-T8)
 
 ## Decision-Making Framework
 

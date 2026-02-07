@@ -10,7 +10,7 @@
 
 This document consolidates the four pillars of ASOM v2 enterprise governance:
 
-1. **Control Catalog** -- what must be true (C-01 through C-10)
+1. **Control Catalog** -- what must be true (C-01 through C-11)
 2. **Evidence Ledger** -- how compliance is proven
 3. **Promotion Gates** -- where enforcement happens (G1 through G4)
 4. **Separation of Duties** -- who can do what
@@ -267,6 +267,101 @@ These are technology-agnostic, align to regulated SDLC expectations (SOX / GxP /
 
 ---
 
+### C-11 -- Emergency Override Protocol
+
+| | |
+|---|---|
+| **Objective** | Ensure that time-critical changes can proceed without weakening the audit trail or normalising deviance |
+| **Risk** | Undocumented bypasses, normalisation of deviance, erosion of gate enforcement |
+| **Scope** | Any promotion where standard gate evidence is incomplete at time of business-critical need |
+
+**Design Philosophy:**
+
+A framework that claims overrides are impossible is lying. A framework that makes overrides auditable is governing. ASOM chooses auditable.
+
+Every regulated framework has an emergency path: ITIL has Emergency Changes, GxP has Deviation Reports, SOX has Management Override with compensating controls. C-11 is ASOM's equivalent.
+
+**Key Principle:** An override does not disable controls -- it defers them. Evidence is still required, just after the fact within a time-bound window.
+
+**Override Model:**
+
+```
+Normal:     Code → Tests → Evidence → Gate → Human Approval → Promote
+Emergency:  Code → Emergency Approval → Promote → [Evidence within N days]
+```
+
+Both paths end with the same evidence requirements. The difference is sequencing, not substance.
+
+**Evidence Requirements:**
+
+| Evidence | Produced By | Timing |
+|----------|-------------|--------|
+| Override request with justification | Requestor (human) | Before override |
+| Emergency Approver sign-off | Emergency Approver (human, senior to Release Approver) | Before override |
+| CRQ with override flag | ServiceNow | Before override |
+| Deferred evidence (all applicable controls) | CI/CD / platform | Within remediation window |
+| Remediation confirmation | Governance Agent (verification only) | At window close |
+| Override incident record | ServiceNow | Automatic |
+
+**Override Rules:**
+
+1. **Higher authority, not less authority.** Emergency override requires approval from a named Emergency Approver -- more senior than the standard Release Approver, not less.
+2. **Immutable record.** The override itself is an evidence entry in the ledger. It cannot be hidden, deleted, or reclassified after the fact.
+3. **Time-bound remediation.** All deferred evidence must be produced within a defined window (default: 5 business days). The window is recorded at override time and cannot be extended without a second Emergency Approver sign-off.
+4. **Compensating controls are mandatory.** The override entry must specify which controls are deferred and what compensating measures are in place during the remediation window.
+5. **Automatic escalation on missed remediation.** If deferred evidence is not produced within the window, the system escalates to governance leadership -- not the team, not the original approver. This is non-negotiable.
+6. **Frequency monitoring.** Override frequency is tracked per team per quarter. Exceeding the threshold (default: >2 per quarter per team) triggers a mandatory process review. This prevents the emergency path from becoming the default path.
+7. **Post-incident review is mandatory.** Every override requires a post-incident review within 10 business days documenting: root cause, what was deferred, remediation status, and process improvement actions.
+
+**Override Evidence Ledger Entry (Additional Fields):**
+
+```yaml
+evidence_id: EL-2026-000200
+control_id: C-11
+produced_by: servicenow
+source_type: override_record
+override_type: emergency
+justification: "Critical data feed failure affecting customer SLA"
+emergency_approver: jane.smith@company.com
+standard_controls_deferred:
+  - C-06  # DQ tests not yet executed
+  - C-09  # Observability not yet configured
+compensating_controls: "Manual monitoring in place, rollback plan documented"
+remediation_deadline: 2026-02-14T17:00:00Z
+remediation_status: pending  # pending | completed | escalated
+crq_ref: SNOW-CRQ-EMG-001
+created_at: 2026-02-07T14:30:00Z
+```
+
+**Verification Rule:**
+- Override record exists in ledger with all required fields
+- Emergency Approver is senior to standard Release Approver
+- Remediation deadline is set and within policy limits
+- Compensating controls are documented
+- Post-incident review is scheduled
+- At remediation deadline: all deferred evidence must be present and passing
+
+**Gate Interaction:**
+- Overrides apply to G3 (QA promotion) and G4 (PROD promotion) only
+- G1 (PR merge) and G2 (Release Candidate) cannot be overridden -- they are prerequisite hygiene
+- An overridden gate records `gate_result: OVERRIDE` (not READY, not BLOCKED)
+- The gate result includes the override evidence ID for traceability
+
+**Anti-Gaming Rules:**
+- Override requests cannot be pre-approved or batched
+- Each override is for a single, specific release
+- "Standing overrides" are explicitly non-compliant
+- Override frequency exceeding threshold triggers automatic process review
+- Teams with repeated overrides may have override privilege suspended pending review
+
+**What C-11 Is NOT:**
+- A shortcut for poor planning
+- A way to avoid writing tests
+- A permanent state (all overrides are time-bound)
+- Available to agents (only humans can request and approve overrides)
+
+---
+
 ### Control-to-PDL Relationship
 
 Each PDL item must map to one or more controls above, with corresponding evidence entries in the Evidence Ledger.
@@ -465,11 +560,12 @@ Agents **may not**: approve gates, override failures, manipulate evidence.
 ### 4.3 Gate Anti-Patterns (Explicitly Forbidden)
 
 The following invalidate a release:
-- Manual gate overrides
-- "Temporary" bypasses without CRQ exception
+- Undocumented gate overrides (documented overrides via C-11 are permitted)
+- "Temporary" bypasses without CRQ and override record
 - Approvals outside ServiceNow
 - Promotion without ledger verification
 - Agent-triggered promotions
+- Standing or pre-approved overrides
 
 ### 4.4 Evidence Produced by Gates
 
@@ -546,8 +642,8 @@ The following are not allowed:
 - Agents approving or promoting
 - Governance agents generating evidence
 - Shared "release accounts"
-- Manual override of failed gates
-- Retroactive approvals
+- Undocumented override of failed gates (documented C-11 overrides are permitted)
+- Retroactive approvals (except deferred evidence under C-11 with time-bound remediation)
 
 Any of the above invalidate the release.
 
@@ -564,11 +660,11 @@ An auditor should be able to:
 1. Select a PROD release
 2. Identify the CRQ
 3. Retrieve all ledger entries for that CRQ
-4. Validate control coverage (C-01 through C-10)
+4. Validate control coverage (C-01 through C-11)
 5. Trace each evidence item to its artifact and source
 6. Confirm approvals and SoD (author != approver != deployer)
 7. Verify gate execution (G1 through G4)
-8. Confirm no overrides occurred
+8. Check for overrides: if none, confirm clean passage; if C-11 override used, verify override record completeness, remediation evidence, and post-incident review
 
 **Using system records only.** No screenshots, email chains, or tribal knowledge required.
 

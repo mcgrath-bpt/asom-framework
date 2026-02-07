@@ -268,22 +268,26 @@ Enforcement Point
 
 ⸻
 
-F-12 — “Process Bypass in Emergencies”
+F-12 — Process Bypass in Emergencies
 
 Description
-Controls bypassed under urgency.
+Controls bypassed under urgency without using the documented override protocol (C-11).
 
 Risk
-Normalisation of deviance.
+Normalisation of deviance. Undocumented bypasses become the default path.
 
 Mitigation
-	•	Emergency paths still require CRQ
-	•	Exception treated as evidence
-	•	Post-incident review mandatory
+	•	C-11 Emergency Override Protocol provides a documented, auditable path
+	•	Overrides defer evidence -- they do not disable controls
+	•	Higher authority required (Emergency Approver, senior to Release Approver)
+	•	Time-bound remediation with automatic escalation on miss
+	•	Override frequency monitoring prevents normalisation (threshold: >2/quarter/team)
+	•	Post-incident review mandatory within 10 business days
 
 Enforcement Point
-	•	SNOW process
-	•	Governance review
+	•	C-11 protocol
+	•	SNOW CRQ with override flag
+	•	Automatic escalation system
 
 ⸻
 
@@ -304,6 +308,49 @@ Enforcement Point
 
 ⸻
 
+F-14 — Override Becomes the Default Path
+
+Description
+Teams routinely use emergency overrides instead of following the standard process, normalising what should be exceptional.
+
+Risk
+Effective collapse of gate enforcement. Controls exist on paper but are routinely deferred.
+
+Mitigation
+	•	Override frequency monitoring per team per quarter
+	•	Threshold breach (>2/quarter/team) triggers mandatory process review
+	•	Override privilege can be suspended pending review
+	•	Standing or pre-approved overrides are explicitly non-compliant
+	•	Root cause analysis in post-incident reviews identifies systemic issues
+
+Enforcement Point
+	•	C-11 frequency monitoring
+	•	Governance quarterly review
+	•	Management escalation
+
+⸻
+
+F-15 — Missed Override Remediation
+
+Description
+Deferred evidence from an emergency override is not produced within the remediation window.
+
+Risk
+Controls remain unsatisfied. The release operates without validated evidence.
+
+Mitigation
+	•	Automatic escalation to governance leadership at remediation deadline (not the team, not the original approver)
+	•	Escalation is non-discretionary -- it happens regardless of explanation
+	•	Remediation deadline cannot be extended without second Emergency Approver sign-off
+	•	Persistent missed remediation triggers override privilege review
+
+Enforcement Point
+	•	Automated deadline monitoring
+	•	Governance leadership escalation
+	•	Evidence Ledger audit
+
+⸻
+
 9. Safe Failure Philosophy
 
 When ASOM fails, it must fail by:
@@ -315,6 +362,7 @@ It must never:
 	•	silently pass
 	•	auto-approve
 	•	degrade controls
+	•	allow undocumented overrides (C-11 exists for this purpose)
 
 ⸻
 

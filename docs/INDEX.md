@@ -5,7 +5,7 @@
 2. `ASOM.md` -- Philosophy and principles
 
 ## Core Specification
-3. `docs/ASOM_CONTROLS.md` -- Controls, evidence, gates, and separation of duties
+3. `docs/ASOM_CONTROLS.md` -- Controls, evidence, gates, and separation of duties (includes C-11 Emergency Override Protocol)
 
 ## Agent Reference
 4. `agents/[ROLE]-AGENT.md` -- Individual agent role definitions

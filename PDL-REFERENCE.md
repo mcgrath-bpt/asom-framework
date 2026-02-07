@@ -252,7 +252,7 @@ For the full gate rules, see `docs/ASOM_CONTROLS.md`.
 ## Agent Responsibilities Summary
 
 ### Governance Agent (PDL Gatekeeper -- Verification Only)
-- Performs Control Applicability Assessment (epic/story level, referencing C-01 through C-10)
+- Performs Control Applicability Assessment (epic/story level, referencing C-01 through C-11)
 - Creates PDL tracking tasks
 - Assigns tasks to appropriate agents
 - Monitors PDL task completion

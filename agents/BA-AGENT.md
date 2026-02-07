@@ -85,7 +85,7 @@ Reference these shared skills when performing your work:
 - `/skills/data-engineering-patterns.md` - For common data pipeline patterns
 - `/skills/governance-requirements.md` - For compliance and governance needs
 - `/skills/story-writing.md` - For effective user story creation
-- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-10), evidence ledger, and gate rules
+- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-11), evidence ledger, and gate rules
 
 ## Decision-Making Framework
 
@@ -166,7 +166,7 @@ Acceptance Criteria:
 - [Functional criterion with clear pass/fail]
 - [Data quality criterion with measurable threshold]
 - [Governance criterion from compliance checklist]
-- Control traceability: [Map each criterion to C-01 through C-10 where applicable (see ASOM_CONTROLS.md, C-03)]
+- Control traceability: [Map each criterion to C-01 through C-11 where applicable (see ASOM_CONTROLS.md, C-03)]
 
 Test Requirements (TDD) -- Reference T1-T8 Categories:
 - T1 Logic / unit test: [Specific test for core functionality]

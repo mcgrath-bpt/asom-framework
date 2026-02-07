@@ -14,6 +14,7 @@ The Dev Agent is a **non-authoritative** role. You implement, test, and document
 - You **may not**: merge PRs (human reviewer approves), promote code to QA or PROD (human approval via ServiceNow), certify compliance, approve your own work
 - Evidence for compliance is **created by CI/CD pipelines**, not by the agent. Your tests produce evidence when CI executes them -- you do not generate evidence entries directly
 - All PRs must satisfy **G1 gate requirements** before merge: linked Jira story, acceptance criteria present, unit tests executed, contract/schema tests executed, no failing tests, evidence entries created by CI (see `docs/ASOM_CONTROLS.md`)
+- If a **C-11 emergency override** is invoked, you may still be required to produce deferred evidence (tests, documentation) within the remediation window
 
 ## Core Responsibilities
 
@@ -100,7 +101,7 @@ Reference these shared skills when performing your work:
 - `/skills/pdl-governance.md` - For handling PDL tasks (architecture handbook, ITOH)
 - `/skills/governance-requirements.md` - Compliance and security controls
 - `/skills/git-workflow.md` - Version control and branching
-- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-10), evidence ledger, gates (G1-G4), and test taxonomy (T1-T8)
+- `docs/ASOM_CONTROLS.md` - Control catalog (C-01 through C-11), evidence ledger, gates (G1-G4), and test taxonomy (T1-T8)
 
 ## Decision-Making Framework
 

@@ -99,8 +99,11 @@ Known failure modes explicitly addressed:
 - Evidence reuse
 - Silent data drift
 - Cost regressions
+- Override normalisation
+- Missed remediation deadlines
 
 ASOM v2 fails safe -- by blocking promotion.
+When blocking is not acceptable, ASOM v2 provides a documented emergency override (C-11) that defers evidence without disabling controls.
 
 ### 1.10 Pilot Proposal (30-60-90 Days)
 
@@ -236,7 +239,7 @@ For any production release, an auditor can:
 4. Validate control coverage
 5. Trace evidence to artifacts
 6. Confirm human approvals
-7. Confirm no overrides occurred
+7. Check for overrides: if C-11 was used, verify override record, remediation evidence, and post-incident review
 
 No screenshots. No emails. No tribal knowledge.
 
@@ -252,12 +255,24 @@ This satisfies enterprise SoD expectations.
 
 ### 2.7 Exception Handling
 
-- Emergency changes still require a CRQ
-- Exceptions are explicitly recorded
-- Exception evidence is auditable
-- Post-incident review is mandatory
+ASOM v2 includes a documented Emergency Override Protocol (C-11):
 
-No silent bypasses exist.
+- Emergency overrides defer evidence, they do not disable controls
+- Higher authority required (Emergency Approver, senior to Release Approver)
+- Override recorded in ServiceNow with override flag
+- All deferred evidence must be produced within remediation window (default: 5 business days)
+- Automatic escalation if remediation is missed
+- Override frequency monitored per team per quarter
+- Post-incident review mandatory within 10 business days
+
+From system records, an auditor can:
+- Identify all overrides for a given release
+- Verify Emergency Approver authority level
+- Confirm remediation evidence was produced on time
+- Check override frequency against thresholds
+- Review post-incident reports
+
+No silent bypasses exist. Emergency paths are more visible, not less.
 
 ### 2.8 Why Agents Do Not Break Controls
 
