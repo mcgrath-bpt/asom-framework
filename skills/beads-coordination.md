@@ -16,11 +16,11 @@ Beads is a git-backed issue tracker designed for AI agent coordination. This ski
 Beads uses `--type` and `--parent` to create hierarchy:
 
 ```
-Epic (--type epic)
-  |-- Story (--type feature, --parent <epic-id>)
-  |   |-- Task (--type task, --parent <story-id>)
+Epic (--type epic) [E001, E002, ...]
+  |-- Story (--type feature, --parent <epic-id>) [S001, S002, ...]
+  |   |-- Task (--type task, --parent <story-id>) [T001, T002, ...]
   |   +-- Comments (bd comments add <id> "...")
-  +-- Story (--type feature, --parent <epic-id>)
+  +-- Story (--type feature, --parent <epic-id>) [S003, S004, ...]
 ```
 
 ### Issue Types
@@ -32,7 +32,11 @@ Epic (--type epic)
 | `task` | Sub-work item | Task, PDL task (T001, T002, ...) |
 | `bug` | Defect | Bug, impediment |
 | `chore` | Maintenance, non-functional | Housekeeping, refactoring |
-| `gate` | Async wait condition | G1-G4 promotion gates |
+
+> **Note on gates:** Beads has a native `gate` type, but it is created automatically
+> by the formula engine -- not directly via `bd create --type gate`. For ASOM G1-G4
+> promotion gates, use `--type task` with a `gate:G3` label and manage via
+> `bd gate resolve <id>`. See "Gates" section below.
 
 ### Workflow States (via --status)
 
@@ -109,10 +113,8 @@ bd list --label-any "workflow:testing,workflow:governance-review"
 
 # List children of an epic/story
 bd children <epic-id>
-bd children <epic-id> --pretty
 
 # Tree view
-bd list --pretty
 bd list --tree
 
 # Show epic completion status
@@ -210,26 +212,33 @@ bd blocked
 
 ## Gates (ASOM G1-G4)
 
-Beads has native gate support for async coordination:
+Beads has a native gate system for async wait conditions. However, gates are
+typically created automatically by the formula engine (not directly via `bd create`).
+
+For ASOM promotion gates, create a task with a `gate:*` label:
 
 ```bash
-# Create a gate (e.g., G1 PR merge gate)
-bd create "G1: PR merge gate for S001" --type gate
+# Create a gate checkpoint (use --type task, not --type gate)
+bd create "G3: QA Promotion Gate -- Sprint 1" --type task \
+  --parent <epic-id> --labels "gate:G3"
 
-# List open gates
+# List open gates (native beads gates only -- for task-based gates use labels)
 bd gate list
 
-# Resolve a gate (human approval step)
+# List ASOM gate tasks
+bd list --label "gate:G3"
+
+# Resolve a native gate
 bd gate resolve <gate-id>
 
-# Show gate details
-bd gate show <gate-id>
+# Close an ASOM gate task (after human approval)
+bd close <gate-task-id> --reason "Approved by Release Approver via CRQ-001"
 ```
 
 **ASOM gate mapping:**
-- **G1 (PR merge)**: Create gate bead, resolve when PR merges with passing CI
-- **G3 (QA promotion)**: Create gate bead, resolve when human Release Approver signs off
-- **G4 (PROD promotion)**: Create gate bead, resolve when human Release Approver signs off
+- **G1 (PR merge)**: Task with `gate:G1` label, closed when PR merges with passing CI
+- **G3 (QA promotion)**: Task with `gate:G3` label, closed when human Release Approver signs off
+- **G4 (PROD promotion)**: Task with `gate:G4` label, closed when human Release Approver signs off
 
 ## Labels for ASOM Workflow
 
