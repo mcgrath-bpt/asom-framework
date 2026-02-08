@@ -119,10 +119,20 @@ Some requests require sequential agent involvement. Orchestrate automatically:
 6. **→ Human action:** Release Approver reviews for promotion
 
 **Pattern: "Start sprint"** (Sprint planning workflow)
-1. **Scrum Master** → Acknowledge sprint goal
+1. **Scrum Master** → Acknowledge sprint goal, create run-log bead (`--type chore`, `run-log,sprint:N` labels)
 2. **Governance** → Unified kickoff: control applicability + PDL Impact Assessment → evidence plan + PDL tasks
 3. **BA** → Create/refine stories with test requirements
 4. **Scrum Master** → Validate Definition of Ready (including PDL task coverage) and create sprint plan
+
+**Pattern: "Close sprint"** (Sprint closure workflow)
+1. **Scrum Master** → Confirm all stories complete, all PDL tasks closed
+2. **Governance** → Final evidence verification + PDL completeness check
+3. **→ Gate G3:** Human Release Approver approves via CRQ → gate task closed
+4. **Scrum Master** → Close stories (with reason), close epic (with reason)
+5. **Scrum Master** → Close run-log with final summary
+6. **Scrum Master** → Create retrospective bead, facilitate retrospective
+7. **All agents** → Contribute retro observations (what went well, what to improve)
+8. **Scrum Master** → Raise action items: sprint-level (for Sprint N+1) and framework-level (for framework backlog)
 
 ---
 
@@ -136,6 +146,7 @@ Claude Response:
 [Scrum Master] Initiating Sprint 1
 
 Sprint Goal: Build customer data pipeline with PII governance
+Run-log created: [bead-id] (--type chore, labels: run-log, sprint:1)
 
 Step 1: Control applicability + PDL Impact Assessment
 [Switching to Governance Agent]
@@ -375,6 +386,48 @@ Human action required:
 Note: This is a time-bound deferral, not a bypass.
 All deferred evidence must be produced within the remediation window.
 Missed remediation triggers automatic escalation to governance leadership.
+```
+
+### Sprint Closure + Retrospective
+```
+User: "Let's close Sprint 1"
+
+Claude Response:
+[Scrum Master] Initiating Sprint 1 closure
+
+Step 1: Confirm completeness
+All stories complete (S001-S003). All PDL tasks closed (T001-T003).
+Governance verification: COMPLETE.
+Run-log (chr.9): All step transitions recorded.
+
+Step 2: G3 gate resolution
+[Gate G3 requires human Release Approver sign-off]
+Human action: Release Approver approves via CRQ → G3 gate closed.
+
+Step 3: Close stories and epic
+S001: Closed (reason: All ACs met. G3 approved.)
+S002: Closed (reason: All ACs met. G3 approved.)
+S003: Closed (reason: All ACs met. G3 approved.)
+Epic: Closed (reason: Sprint 1 complete.)
+Run-log: Closed with final summary.
+
+Step 4: Retrospective
+[Creates retrospective bead]
+
+What went well:
+- [Observations from all agents]
+
+What to improve:
+- [Observations from all agents]
+
+Action items:
+- Sprint-level: AI-001, AI-002, ... (for Sprint 2 backlog)
+- Framework-level: FW-001, FW-002, ... (for framework backlog)
+
+[Framework items raised as beads in framework repo]
+[Sprint items carried into Sprint 2 planning]
+
+Sprint 1 closed. Ready for Sprint 2 planning.
 ```
 
 ---
