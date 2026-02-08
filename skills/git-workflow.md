@@ -677,19 +677,59 @@ git config --global --list | grep alias
 
 ## ASOM Integration
 
+### Branching Model and Gates
+
+Feature branches enforce the G1 gate. Each story gets its own branch, and the
+PR merge is the G1 checkpoint.
+
+```
+main (protected -- no direct commits)
+├── feature/S001-extract-cur-data      → PR → G1 gate → merge to main
+├── feature/S002-transform-cost-summary → PR → G1 gate → merge to main
+└── feature/S003-cost-analytics         → PR → G1 gate → merge to main
+```
+
+**Branch naming convention:** `feature/<story-id>-brief-description`
+
+**G1 gate requirements (enforced at PR merge):**
+- Linked Jira/Beads story ID in PR description
+- All tests passing (CI)
+- TDD commit history (RED → GREEN → REFACTOR visible in branch)
+- No secrets or PII in diff
+
+**When to use `develop` branch:**
+- Optional. Use `main`-only for small teams or early adoption.
+- Add `develop` as integration branch when multiple stories merge
+  concurrently and need integration testing before release.
+
+**Simplified model (recommended for getting started):**
+```
+main (protected)
+└── feature/* (one per story, PR to main)
+```
+
+**Full model (for larger teams):**
+```
+main (production, tagged releases)
+├── develop (integration)
+│   └── feature/* (one per story, PR to develop)
+└── hotfix/* (emergency, PR to main + develop)
+```
+
 ### For Dev Agent
 
 **TDD workflow with Git:**
-1. Create feature branch for story
+1. Create feature branch from main: `feature/S001-description`
 2. RED commit: Write failing test
 3. GREEN commit: Implement to pass
 4. REFACTOR commit: Improve quality
-5. Create PR with full history
-6. Squash and merge to main
+5. Create PR with linked story, TDD history visible
+6. G1 gate: CI passes, PR approved, merge to main
 
 **Governance evidence:**
 - Commit history proves TDD followed
 - PR reviews show quality validation
+- Branch-per-story enforces isolation
 - Tags mark audit-ready releases
 
 ### For QA Agent
@@ -734,10 +774,10 @@ git blame src/transform/masking.py
 ## Summary
 
 **Branching:**
-- `main` for production (protected)
-- `develop` for integration
-- `feature/*` for stories
-- `hotfix/*` for urgent fixes
+- `main` for production (protected, no direct commits)
+- `feature/*` for stories (one branch per story, PR = G1 gate)
+- `develop` for integration (optional, add when needed)
+- `hotfix/*` for urgent fixes (from main, PR to main)
 
 **Commits:**
 - Type prefix (feat, fix, test, refactor, docs, chore)

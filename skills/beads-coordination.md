@@ -595,10 +595,12 @@ bd close <story-id> --reason "All controls verified. Approved by Release Approve
 
 ### Run Log (Sprint/Dry Run Evidence)
 
-Create a `chore` under the sprint epic to capture orchestration history:
+Create a `chore` under the sprint epic to capture the full sprint lifecycle.
+The run-log is created at sprint initiation and closed after the retrospective
+-- it must cover the entire lifecycle including human checkpoints.
 
 ```bash
-# Create run-log at sprint start
+# Create run-log at sprint start (Step 1 of the sprint)
 bd create "Run Log: Sprint N [Pipeline Name]" --type chore \
   --parent <epic-id> --labels "run-log,sprint:N" \
   --description "Captures ASOM workflow orchestration -- agent step transitions, gate checkpoints, and final sprint summary."
@@ -613,22 +615,46 @@ Controls applicable: C-01 through C-08
 PDL tasks created: T001-T003
 Handoff to: BA Agent"
 
-# ... one comment per agent transition ...
+# ... one comment per agent transition through development, QA, governance ...
 
-# Final summary at sprint end
+# Human gate approval (do NOT skip this step)
+bd comments add <run-log-id> "STEP N: [Human] G3 Gate Approval
+Release Approver reviewed evidence and PDL. G3 approved.
+Gate task closed. CRQ: [reference]
+Handoff to: Scrum Master for sprint closure"
+
+# Sprint closure
+bd comments add <run-log-id> "STEP N+1: [Scrum Master] Sprint Closure
+Stories closed: [list with reasons]. Epic closed.
+Handoff to: Scrum Master for retrospective"
+
+# Retrospective
+bd comments add <run-log-id> "STEP N+2: [Scrum Master] Retrospective
+Retro bead created. Action items raised:
+  Sprint-level: AI-001, AI-002
+  Framework-level: FW-001, FW-002
+Sprint complete."
+
+# Final summary (last comment before closing)
 bd comments add <run-log-id> "== FINAL RUN SUMMARY ==
-Steps: N workflow steps from initiation to G3
+Steps: N workflow steps from initiation through retrospective
 Tests: X/X passing, Y% coverage
 Defects: N
+Artifacts: [modules, docs, commits]
 Gaps identified: [list]
-Retrospective input: [observations]"
+Framework improvements raised: [FW-* items]"
 
-# Close when sprint concludes
-bd close <run-log-id> --reason "Sprint complete. Run evidence captured."
+# Close AFTER retrospective (not before)
+bd close <run-log-id> --reason "Sprint complete. Full lifecycle captured."
 ```
+
+**Run-log lifecycle rule:** The run-log stays open until the retrospective is
+complete. Closing it before human approval, sprint closure, or retrospective
+creates gaps in the audit trail (learned from Sprint 1).
 
 The run-log provides:
 - Audit trail of agent orchestration decisions
+- Human checkpoint evidence (gate approvals recorded)
 - Evidence for retrospectives
 - Replayable record of how the sprint was executed
 - Input for process improvement
