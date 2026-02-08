@@ -592,3 +592,43 @@ Human approval required for promotion."
 # After human approval
 bd close <story-id> --reason "All controls verified. Approved by Release Approver."
 ```
+
+### Run Log (Sprint/Dry Run Evidence)
+
+Create a `chore` under the sprint epic to capture orchestration history:
+
+```bash
+# Create run-log at sprint start
+bd create "Run Log: Sprint N [Pipeline Name]" --type chore \
+  --parent <epic-id> --labels "run-log,sprint:N" \
+  --description "Captures ASOM workflow orchestration -- agent step transitions, gate checkpoints, and final sprint summary."
+
+# Add step transitions as comments (one per major handoff)
+bd comments add <run-log-id> "STEP 1: [Scrum Master] Sprint Initiation
+Epic created. Sprint goal defined.
+Handoff to: Governance Agent for unified kickoff"
+
+bd comments add <run-log-id> "STEP 2: [Governance Agent] Unified Kickoff
+Controls applicable: C-01 through C-08
+PDL tasks created: T001-T003
+Handoff to: BA Agent"
+
+# ... one comment per agent transition ...
+
+# Final summary at sprint end
+bd comments add <run-log-id> "== FINAL RUN SUMMARY ==
+Steps: N workflow steps from initiation to G3
+Tests: X/X passing, Y% coverage
+Defects: N
+Gaps identified: [list]
+Retrospective input: [observations]"
+
+# Close when sprint concludes
+bd close <run-log-id> --reason "Sprint complete. Run evidence captured."
+```
+
+The run-log provides:
+- Audit trail of agent orchestration decisions
+- Evidence for retrospectives
+- Replayable record of how the sprint was executed
+- Input for process improvement

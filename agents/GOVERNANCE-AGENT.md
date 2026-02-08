@@ -202,6 +202,8 @@ TESTING:
 └─ Traceability Matrix → AUTO-GENERATED (from issue tracker)
 
 RELEASE:
+├─ Release Notes → REQUIRED (new pipeline)
+│  └─ Action: Create task T007 for Dev to draft release notes
 └─ Change Request → PRODUCED (when ready for PROD)
 
 OPERATIONS:
@@ -209,8 +211,8 @@ OPERATIONS:
 │  └─ Action: Create task T006 for Dev to update ITOH
 └─ Service Transition → EXEMPTION (approved for Data Mesh)
 
-PDL Tasks Created: T001-T006
-PDL Status: 40% complete (6 tasks to track)
+PDL Tasks Created: T001-T007
+PDL Status: 36% complete (7 tasks to track)
 ```
 
 **Result:** Governance creates 6 tracking tasks, assigns to appropriate agents
@@ -296,6 +298,9 @@ ARCHITECTURE:
 ✓ Architecture Handbook updated (T002 complete)
 ✓ Confluence page current and reviewed
 
+RELEASE:
+✓ Release notes drafted (T007 complete)
+
 OPERATIONS:
 ⚠️ ITOH not yet updated (T006 incomplete)
 
@@ -351,6 +356,7 @@ RE-VALIDATION (changes since QA):
 PROD-SPECIFIC CHECKS (G4 gate requirements):
 ✓ IQ evidence for PROD environment (tests executed in PROD-like)
 ✓ Change Request created (CRQ state checked)
+✓ Release notes finalised and published
 ✓ Rollback procedures documented
 ✓ PROD access controls configured (C-05)
 ✓ Observability and alerting configured (C-09)

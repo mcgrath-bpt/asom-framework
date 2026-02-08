@@ -61,6 +61,7 @@ For full gate rule definitions, see `docs/ASOM_CONTROLS.md`.
 - Traceability Matrix (Stories ↔ Tests)
 
 ### Release & Operations
+- Release Notes (User-facing change summary -- maintained across releases)
 - Change Request (CRQ record)
 - IT Operational Handbook (ITOH - runbook)
 - Service Transition (Deployment procedures)
@@ -113,6 +114,8 @@ TESTING:
 └─ Traceability Matrix → PRODUCED (auto-generated) | Controls: C-03
 
 RELEASE:
+├─ Release Notes → [PRODUCED/REFERENCED/N/A] | Controls: C-01, C-03
+│  └─ Action: [Create task -- maintained across releases, updated at each promotion]
 └─ Change Request → PRODUCED (when ready for PROD) | Controls: C-01, C-02
 
 OPERATIONS:
@@ -175,6 +178,10 @@ SECURITY & PRIVACY:
 [ ] PII protection validated
 [ ] Access controls verified
 
+RELEASE:
+[ ] Release notes drafted for this release scope
+[ ] Release notes reviewed by BA/Dev for accuracy
+
 OPERATIONS:
 [ ] ITOH updated (if operational procedures changed)
 [ ] Monitoring and alerting documented
@@ -207,6 +214,7 @@ RE-VALIDATION:
 PROD-SPECIFIC:
 [ ] IQ evidence for PROD environment
 [ ] Change Request created and approved
+[ ] Release notes finalised and published
 [ ] Rollback procedures documented
 [ ] PROD access controls configured
 [ ] Production monitoring verified
@@ -396,6 +404,65 @@ Steps:
 - Prevention: [How to avoid in future]
 ```
 
+**Example: Draft Release Notes**
+```markdown
+Task: T00X - Draft Release Notes for Sprint [N]
+
+Steps:
+1. Gather from completed stories:
+   - What changed (new features, bug fixes, improvements)
+   - What users/operators need to know
+   - Breaking changes or migration steps
+   - Known issues or limitations
+
+2. Draft release notes using template below
+
+3. Review with BA (business accuracy) and QA (test status)
+
+4. Update at each promotion:
+   - QA promotion: Draft status
+   - PROD promotion: Final/Published status
+
+5. Tag Governance Agent for review
+6. Mark task complete when approved
+```
+
+**Release Notes Template:**
+```markdown
+# Release Notes - [Pipeline/Component Name]
+
+## Version [X.Y.Z] - [Date]
+
+### What's New
+- [Feature 1]: [Brief user-facing description]
+- [Feature 2]: [Brief user-facing description]
+
+### Improvements
+- [Improvement 1]: [What changed and why]
+
+### Bug Fixes
+- [Fix 1]: [What was wrong and what was fixed]
+
+### Breaking Changes
+- [If any]: [Migration steps required]
+
+### Known Issues
+- [If any]: [Description and workaround]
+
+### Technical Details
+- Stories: [S001, S002, ...]
+- Test coverage: [X]%
+- Controls verified: [C-01, C-06, ...]
+
+### Deployment Notes
+- Environment: [QA / PROD]
+- Dependencies: [Any prerequisite changes]
+- Rollback: [Reference to ITOH rollback procedure]
+
+---
+Previous releases: [Link to historical release notes]
+```
+
 ## For QA Agent
 
 ### Handling PDL Tasks
@@ -561,6 +628,7 @@ Steps:
 - `pdl-blocker` - Blocking QA/PROD deployment
 - `pdl-architecture` - Architecture Handbook tasks
 - `pdl-testing` - Test evidence tasks (IQ/OQ/PQ)
+- `pdl-release-notes` - Release notes tasks
 - `pdl-operations` - ITOH/runbook tasks
 - `pdl-governance` - Assessment tasks
 - `pdl-requirements` - Charter/risk/roadmap tasks
@@ -616,8 +684,8 @@ Steps:
 **Who does what:**
 - Governance: PDL Impact Assessment, gate reviews, assessments
 - BA: Risk register, charter, roadmap
-- Dev: Architecture docs, ITOH, design specs
-- QA: Test plans, test evidence, traceability
+- Dev: Architecture docs, ITOH, design specs, release notes (draft)
+- QA: Test plans, test evidence, traceability, release notes (review)
 - Scrum Master: Track completion, flag blockers
 
 **When:**

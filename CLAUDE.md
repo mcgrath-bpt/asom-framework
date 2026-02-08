@@ -158,10 +158,12 @@ PDL Impact Assessment:
 │  └─ T002 → QA Agent
 ├─ ITOH: UPDATE REQUIRED | C-09
 │  └─ T003 → Dev Agent
+├─ Release Notes: REQUIRED | C-01, C-03
+│  └─ T004 → Dev Agent
 └─ Change Request: PRODUCED (at G3) | C-01
 
-PDL Tasks: T001-T003 created and assigned
-PDL Status: 40% complete (3 tasks to track, 5 items auto-produced)
+PDL Tasks: T001-T004 created and assigned
+PDL Status: 33% complete (4 tasks to track, 5 items auto-produced)
 
 Step 2: Story creation
 [Switching to BA Agent]
