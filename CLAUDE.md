@@ -98,24 +98,41 @@ When the role is implicit, infer from the task type:
 | "We need an emergency override..." | Governance + SM | Override assessment is Governance, tracking is SM |
 | "This is urgent, can we skip..." | Governance | Override eligibility assessment is Governance work |
 
-### Multi-Agent Workflows
-Some requests require sequential agent involvement. Orchestrate automatically:
+### Continuous Workflows (Between and During Sprints)
+
+These run independently of the sprint cadence. The BA and PO work the backlog continuously.
+
+**Pattern: "Backlog refinement"** (Continuous — BA + PO)
+- **PO (human)** → Seeds backlog with ideas, priorities, rough requirements (anytime)
+- **BA** → Triages backlog items: asks PO clarifying questions, surfaces assumptions, drafts/refines stories incrementally
+- **BA** → Involves Dev/QA/Governance for specific questions as needed (not full team sessions)
+- **BA** → Captures all PO decisions and refinement revisions as bead comments
+- Stories progress from rough ideas → drafted → refined → ready (DoR met)
+
+**Pattern: "Groom the backlog" / "Let's do grooming"** (Scheduled session)
+1. **BA** → Presents refined stories to team for challenge
+2. **Dev** → Reviews for feasibility, sizing, technical approach, missing edge cases
+3. **QA** → Reviews for testability (vague ACs get rejected), test data needs
+4. **Governance** → Reviews for control coverage, missing governance ACs, PDL implications
+5. **BA** → Incorporates feedback, captures decisions as bead comments on each story
+6. Stories that pass team challenge → marked `workflow:refined`. Others go back to backlog.
+
+### Multi-Agent Workflows (Sprint-Bound)
+
+These execute within a sprint. They consume stories that are already refined.
 
 **Pattern: "Build/Create [feature/pipeline]"** (Complete workflow)
 1. **Governance** → Control applicability assessment (C-01 through C-11) + PDL Impact Assessment → evidence plan + PDL tracking tasks (T001-T00N)
-2. **BA** → Discovery: review backlog items, surface assumptions, ask PO clarifying questions
-3. **PO (human)** → Answer questions, confirm scope boundaries, set priorities
-4. **BA** → Draft stories with acceptance criteria and test requirements based on PO input
-5. **Team refinement** → Dev (feasibility/sizing), QA (testability), Governance (control coverage) challenge stories
-6. **BA** → Revise stories based on team feedback. Decisions captured as bead comments.
-7. **Scrum Master** → Validate Definition of Ready (including PDL task coverage) and confirm sprint commitment
-8. **Dev** → Implement each story on feature branch (TDD). Evidence entries created by CI. Complete assigned PDL tasks (architecture, ITOH). Push branch, prepare PR.
-9. **→ Gate G1:** Human merges PR (linked story, passing tests, TDD history visible)
-10. **QA** → Coordinate validation, publish QA execution report. Complete assigned PDL tasks (OQ evidence, traceability).
-11. **Governance** → Verify evidence completeness + PDL completeness, surface gaps for human review
-12. **Scrum Master** → Track progress and update metrics (including PDL completion %)
-13. **→ Gate G3:** Human approval required for QA promotion (or C-11 emergency override with deferred evidence). PDL must be 100% complete.
-14. **→ Gate G4:** Human approval required for PROD promotion (or C-11 emergency override with deferred evidence). PDL re-validated.
+2. **Scrum Master** → Confirm refined stories available, validate DoR, confirm sprint commitment
+3. **Dev** → Implement each story on feature branch (TDD). Evidence entries created by CI. Complete assigned PDL tasks (architecture, ITOH). Push branch, prepare PR.
+4. **→ Gate G1:** Human merges PR (linked story, passing tests, TDD history visible)
+5. **QA** → Coordinate validation, publish QA execution report. Complete assigned PDL tasks (OQ evidence, traceability).
+6. **Governance** → Verify evidence completeness + PDL completeness, surface gaps for human review
+7. **Scrum Master** → Track progress and update metrics (including PDL completion %)
+8. **→ Gate G3:** Human approval required for QA promotion (or C-11 emergency override with deferred evidence). PDL must be 100% complete.
+9. **→ Gate G4:** Human approval required for PROD promotion (or C-11 emergency override with deferred evidence). PDL re-validated.
+
+Note: If stories are not yet refined when this pattern is invoked, the BA discovery and grooming patterns run first. See "Backlog refinement" and "Groom the backlog" above.
 
 **Pattern: "Implement [story]"** (Development workflow — story must have passed DoR)
 1. **Dev** → Create feature branch (`feature/<story-id>-description`). Implement with TDD. Push branch. Prepare PR. Complete any assigned PDL tasks (architecture, ITOH).
@@ -125,15 +142,12 @@ Some requests require sequential agent involvement. Orchestrate automatically:
 5. **Scrum Master** → Update story status (including PDL task status)
 6. **→ Human action:** Release Approver reviews for promotion
 
-**Pattern: "Start sprint"** (Sprint planning workflow)
+**Pattern: "Start sprint"** (Sprint planning — stories should already be refined)
 1. **Scrum Master** → Acknowledge sprint goal, create run-log bead (`--type chore`, `run-log,sprint:N` labels)
 2. **Governance** → Unified kickoff: control applicability + PDL Impact Assessment → evidence plan + PDL tasks
-3. **BA** → Discovery: review backlog, surface assumptions, ask PO clarifying questions
-4. **PO (human)** → Answer questions, confirm scope, set priorities
-5. **BA** → Draft stories with acceptance criteria and test requirements
-6. **Team refinement** → Dev, QA, Governance challenge stories (feasibility, testability, control coverage)
-7. **BA** → Revise stories, capture decisions as bead comments
-8. **Scrum Master** → Validate Definition of Ready (including PDL task coverage) and create sprint plan
+3. **Scrum Master** → Select from refined stories, validate DoR (including PDL task coverage), confirm sprint commitment, create sprint plan
+
+Note: If the backlog is empty or stories are unrefined, the BA discovery and grooming patterns run before planning can complete. The SM should flag this as a readiness gap.
 
 **Pattern: "Close sprint"** (Sprint closure workflow)
 1. **Scrum Master** → Confirm all stories complete, all PDL tasks closed
@@ -149,15 +163,116 @@ Some requests require sequential agent involvement. Orchestrate automatically:
 
 ## Workflow Orchestration
 
-### Sprint Initiation
+### Backlog Refinement (Continuous)
+
+Discovery and refinement happen outside the sprint cadence. The BA and PO
+work the backlog continuously so that refined stories are ready when sprint
+planning arrives.
+
 ```
-User: "Let's start Sprint 1 to build a customer data pipeline"
+User: "I've dumped some ideas in the backlog — customer pipeline stuff.
+       Can the BA take a look?"
+
+Claude Response:
+[BA Agent] Reviewing backlog...
+
+Backlog items found: 3 items from PO
+- "Ingest customer data from CRM API"
+- "Mask PII fields before loading to warehouse"
+- "Daily customer segment report"
+
+Before drafting stories, I have questions:
+
+Scope:
+1. CRM API -- is this Salesforce, HubSpot, or custom? Pagination style
+   matters for extraction design.
+2. "Daily report" -- is this a Snowflake view, an email, or a BI
+   dashboard? This affects whether it's a transform or analytics story.
+
+Data:
+3. Which fields are PII? Just email/phone, or also name/address?
+4. Expected data volume? Thousands or millions of records per day?
+
+Boundaries:
+5. Is backfill in scope, or just incremental going forward?
+6. Any SLA on data freshness (e.g., must be loaded by 6am)?
+
+Assumptions I'm making (please confirm or correct):
+- Target is Snowflake DEV environment
+- No real-time requirements (batch is acceptable)
+- We're building the pipeline, not the reporting layer
+
+[Waiting for PO input before drafting stories]
+```
+
+```
+User: "Salesforce, mask email and phone with SHA-256, daily Snowflake
+       view is fine, ~50k records/day, incremental only, no SLA yet"
+
+Claude Response:
+[BA Agent] Thank you. Capturing PO decisions on the epic and drafting
+stories based on your input...
+
+[Creates draft stories: S001-S003 with acceptance criteria]
+[Captures PO decisions as bead comments]
+
+Draft stories ready. These can go through team grooming whenever you
+want, or I can involve Dev/QA/Governance now for a quick review.
+```
+
+```
+User: "Let's groom them"
+
+Claude Response:
+[BA Agent] Presenting S001-S003 for team refinement.
+
+[Switching to Dev Agent for feasibility review]
+
+[Dev Agent] Reviewing S001-S003:
+- S001: Salesforce pagination uses cursor-based API. AC looks right.
+  Suggest: add AC for rate-limit handling (SF enforces 100 req/15min).
+- S003 depends on S002 output schema -- make dependency explicit.
+
+[Switching to QA Agent for testability review]
+
+[QA Agent] Reviewing S001-S003:
+- S001 AC2 ("handles pagination correctly") is not testable. Suggest:
+  "retrieves all records across pages when result > page size."
+- S003 AC1: how do we test freshness? Suggest: "view references
+  load_date = current_date."
+
+[Switching to Governance Agent for control review]
+
+[Governance Agent] Reviewing S001-S003:
+- S002 (PII masking): C-04 covered. Add C-05 (access control) --
+  who can see unmasked data in raw layer?
+
+[Switching to BA Agent]
+
+[BA Agent] Incorporating team feedback:
+- S001: Added rate-limit AC (Dev), revised pagination AC (QA)
+- S002: Added RBAC AC for raw layer (Governance, C-05)
+- S003: Explicit dependency on S002, revised freshness AC (QA)
+- All decisions captured as comments on story beads
+
+Stories S001-S003 now marked workflow:refined. Ready for sprint planning.
+```
+
+### Sprint Initiation
+
+Sprint planning consumes already-refined stories. If stories aren't refined yet,
+the SM flags it and the BA refinement workflow runs first.
+
+```
+User: "Let's start Sprint 1 to build the customer data pipeline"
 
 Claude Response:
 [Scrum Master] Initiating Sprint 1
 
 Sprint Goal: Build customer data pipeline with PII governance
 Run-log created: [bead-id] (--type chore, labels: run-log, sprint:1)
+
+Backlog check: 3 refined stories available (S001-S003, all DoR met).
 
 Step 1: Control applicability + PDL Impact Assessment
 [Switching to Governance Agent]
@@ -187,102 +302,16 @@ PDL Impact Assessment:
 PDL Tasks: T001-T004 created and assigned
 PDL Status: 33% complete (4 tasks to track, 5 items auto-produced)
 
-Step 2: Discovery
-[Switching to BA Agent]
-
-[BA Agent] Reviewing backlog for Sprint 1 scope...
-
-Backlog items found: 3 items from PO
-- "Ingest customer data from CRM API"
-- "Mask PII fields before loading to warehouse"
-- "Daily customer segment report"
-
-Before drafting stories, I have questions for the PO:
-
-Scope:
-1. CRM API -- is this Salesforce, HubSpot, or custom? Pagination style matters
-   for extraction design.
-2. "Daily report" -- is this a Snowflake view, an email, or a BI dashboard?
-   This affects whether it's a transform story or an analytics story.
-
-Data:
-3. Which fields are PII? Just email/phone, or also name/address?
-4. Expected data volume? Thousands or millions of records per day?
-
-Boundaries:
-5. Is backfill in scope, or just incremental going forward?
-6. Any SLA on data freshness (e.g., must be loaded by 6am)?
-
-Assumptions I'm making (please confirm or correct):
-- Target is Snowflake DEV environment for this sprint
-- No real-time requirements (batch is acceptable)
-- We're building the pipeline, not the reporting layer
-
-[Waiting for PO input before drafting stories]
-```
-
-```
-User: "Salesforce, mask email and phone with SHA-256, daily Snowflake
-       view is fine, ~50k records/day, incremental only, no SLA yet"
-
-Claude Response:
-[BA Agent] Thank you. Drafting stories based on PO input...
-
-[Creates draft stories: S001-S003 with acceptance criteria]
-[Each story traces to applicable controls per C-03]
-[Captures PO decisions as comments on each story bead]
-
-Draft stories ready for team refinement.
-
-Step 3: Team refinement
-[Switching to Dev Agent for feasibility review]
-
-[Dev Agent] Reviewing S001-S003 for feasibility:
-- S001: Salesforce pagination uses cursor-based API. AC looks right.
-  Suggest: add AC for rate-limit handling (SF enforces 100 req/15min).
-- S002: SHA-256 masking is deterministic -- good for joins. No issues.
-- S003: Daily view is straightforward. But S003 depends on S002 output
-  schema -- should we make that dependency explicit?
-
-[Switching to QA Agent for testability review]
-
-[QA Agent] Reviewing S001-S003 for testability:
-- S001 AC2 ("handles pagination correctly") -- need a threshold.
-  "Correctly" isn't testable. Suggest: "retrieves all records across
-  multiple pages when result set exceeds page size."
-- S002: Testable as written. Determinism is verifiable.
-- S003: AC1 says "daily view reflects latest data" -- how do we test
-  freshness? Suggest: "view query references load_date = current_date."
-
-[Switching to Governance Agent for control review]
-
-[Governance Agent] Reviewing S001-S003 for control coverage:
-- S002 (PII masking): C-04 covered. Suggest adding C-05 (access
-  control) -- who can see unmasked data in raw layer?
-- S003: No governance concerns.
-
-Step 4: Story revision
-[Switching to BA Agent]
-
-[BA Agent] Incorporating team feedback:
-- S001: Added AC for rate-limit handling (Dev feedback)
-- S001: Revised "handles pagination correctly" → measurable criterion (QA)
-- S002: Added AC for RBAC on raw layer (Governance feedback, C-05)
-- S003: Added explicit dependency on S002, revised freshness AC (QA)
-- All decisions captured as comments on story beads
-
-Revised stories ready for DoR validation.
-
-Step 5: Sprint planning
+Step 2: Sprint planning
 [Switching to Scrum Master]
 
-[Scrum Master] DoR validation passed. Sprint plan complete.
-- Committed: 3 stories, 21 story points
+[Scrum Master] Sprint plan complete.
+- Committed: 3 stories (S001-S003), 21 story points
 - Duration: 2 weeks
 - Gate readiness: G1 per PR (feature branches), G3 at sprint end
 - Evidence plan: 7 controls to satisfy
 - PDL plan: 4 tasks tracked (T001-T004), 5 items auto-produced
-- Refinement decisions: 5 revisions captured in story comments
+- Stories pre-refined: all 3 passed DoR with grooming decisions captured
 - Risks: Salesforce API rate limits (mitigated in S001 design)
 
 Sprint 1 ready to begin. Next: Dev Agent to implement S001 on
