@@ -293,16 +293,57 @@ bd state <issue-id> workflow
 
 ## Agent Coordination Patterns
 
+### Discovery and Refinement (Grooming)
+
+Discovery and refinement happen before stories are committed to a sprint.
+Decisions and revisions are captured as bead comments on the story they affect.
+
+```bash
+# BA Agent reviews backlog and captures PO decisions on the epic
+bd comments add <epic-id> "[BA Agent] Discovery: PO scope decisions
+- Source confirmed: Salesforce API (cursor-based pagination)
+- PII fields: email, phone → SHA-256 masking
+- Volume: ~50k records/day, incremental only
+- No freshness SLA for Sprint 1"
+
+# BA Agent drafts stories (standard create flow)
+# ...
+
+# Team refinement: each agent reviews and comments on the story
+bd comments add <story-id> "[Dev Agent] Refinement review:
+- Suggest: add AC for API rate-limit handling (SF enforces 100 req/15min)
+- S003 depends on S002 output schema — make dependency explicit"
+
+bd comments add <story-id> "[QA Agent] Refinement review:
+- AC2 'handles pagination correctly' is not testable as written
+- Suggest: 'retrieves all records across pages when result > page size'"
+
+bd comments add <story-id> "[Governance Agent] Refinement review:
+- C-05 (access control): who can see unmasked data in raw layer?
+- Suggest: add RBAC AC for raw layer access"
+
+# BA Agent incorporates feedback and records what changed
+bd comments add <story-id> "[BA Agent] Refinement: S001 revised
+- Added: Rate-limit handling AC (Dev feedback)
+- Revised: Pagination AC → measurable criterion (QA feedback)
+- Added: RBAC AC for raw layer (Governance feedback, C-05)
+All feedback incorporated. Ready for DoR validation."
+```
+
+**Rule:** Every revision during refinement is captured as a comment stating
+who raised it, what changed, and why. This is the grooming audit trail.
+
 ### BA --> Dev Handoff
 
 ```bash
-# BA Agent refines story and marks ready
+# BA Agent marks story as refined and ready (after refinement complete)
 bd update <story-id> --add-label "workflow:refined"
 bd comments add <story-id> "[BA Agent] Story refined and ready for development
-- Acceptance criteria defined
-- Data sources documented: Customer API
-- Business rules: Filter for active customers only
-- Governance requirements: Email PII masking required"
+- PO scope confirmed (discovery)
+- Team refinement complete (Dev, QA, Governance reviewed)
+- All feedback incorporated
+- Acceptance criteria defined and testable
+- Governance requirements: Email PII masking required (C-04, C-05)"
 
 # Dev Agent claims story
 bd update <story-id> --claim
