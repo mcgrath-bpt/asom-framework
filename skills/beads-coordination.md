@@ -293,10 +293,52 @@ bd state <issue-id> workflow
 
 ## Agent Coordination Patterns
 
+### Backlog Lifecycle
+
+The backlog is a living artefact. Items move through stages from raw idea to
+sprint-ready story. Every stage is tracked in beads so the discovery trail
+is preserved.
+
+```bash
+# Stage 1: PO seeds backlog with raw ideas (anytime)
+# Use bd q for quick capture, or create directly
+bd q "Customer pipeline from Salesforce"
+bd q "Need PII masking before warehouse load"
+bd q "Daily cost trend report"
+
+# Stage 2: BA triages — discovery conversation happens on the backlog item
+# Questions and PO answers are captured as comments
+bd comments add <backlog-id> "[BA Agent] Discovery questions:
+Scope: Is this Salesforce specifically? Pagination style matters.
+Data: Which fields are PII? Volume?
+Boundaries: Backfill or incremental only?"
+
+bd comments add <backlog-id> "[BA Agent] PO decisions captured:
+- Source: Salesforce API, cursor-based
+- PII: email + phone, SHA-256
+- Volume: ~50k/day, incremental only"
+
+# Stage 3: BA creates story from backlog item
+# Link the story back to the original item for traceability
+bd create "S001: Extract customer data from Salesforce" --type feature \
+  --parent <epic-id> --description "Originated from backlog item <backlog-id>"
+
+# Close the original backlog item (it's now a story)
+bd close <backlog-id> --reason "Refined into story <story-id>"
+
+# Stage 4: Refinement and grooming (see below)
+# Stage 5: Story marked workflow:refined → ready for sprint planning
+```
+
+**Traceability rule:** When a backlog item becomes a story, close the original
+item with a reference to the new story. The discovery comments stay on the
+original item as an audit trail of how the requirement evolved.
+
 ### Discovery and Refinement (Grooming)
 
-Discovery and refinement happen before stories are committed to a sprint.
-Decisions and revisions are captured as bead comments on the story they affect.
+Discovery and refinement are continuous activities — they happen between and
+during sprints. Decisions and revisions are captured as bead comments on the
+story they affect.
 
 ```bash
 # BA Agent reviews backlog and captures PO decisions on the epic
