@@ -295,43 +295,6 @@ WHERE access_timestamp > DATEADD(hour, -1, CURRENT_TIMESTAMP());
 -- Expected: >0 if any access occurred
 ```
 
-## Product Delivery Log (PDL)
-
-### PDL Template
-```markdown
-# Sprint [N] Product Delivery Log
-
-## Data Privacy Compliance
-- [ ] PII fields identified and documented
-- [ ] PII masking/redaction implemented
-- [ ] Privacy impact assessment completed (if high-risk processing)
-- [ ] Data subject rights process documented
-
-## Security Controls
-- [ ] Access controls implemented (RBAC)
-- [ ] Encryption verified (at rest and in transit)
-- [ ] Service account credentials secured
-- [ ] Network security controls applied
-
-## Audit & Compliance
-- [ ] Audit logging implemented for all data access
-- [ ] Audit columns added to all curated tables
-- [ ] Data retention policies defined and coded
-- [ ] Data lineage documented
-
-## Testing Evidence
-- [ ] PII masking tests: PASSED
-- [ ] Access control tests: PASSED
-- [ ] Data quality tests: PASSED
-- [ ] Audit trail tests: PASSED
-
-## Documentation
-- [ ] Data lineage diagram created
-- [ ] Privacy notice updated
-- [ ] Runbook created for operations
-- [ ] Compliance evidence archived
-```
-
 ## Governance Metrics
 
 Track compliance:
@@ -356,40 +319,11 @@ Escalate to Product Owner if:
 - Retention policy conflicts with business needs
 - Data breach suspected
 
-## Control Objective Mapping
+## Control Objectives & Evidence
 
-Every governance requirement in this document maps to a formal control objective defined in `docs/ASOM_CONTROLS.md`. Use this mapping to connect implementation work to auditable controls.
+All governance requirements in this document map to formal control objectives C-01 through C-11 and the Evidence Ledger specification in `docs/ASOM_CONTROLS.md`. When implementing, tag the applicable control. When verifying, check evidence exists in the ledger.
 
-| Governance Requirement | Control ID(s) | Control Name |
-|------------------------|---------------|--------------|
-| PII Protection (masking, redaction) | C-04, C-05 | C-04: Data Privacy, C-05: Access Control |
-| Audit Logging | C-07 | Audit Trail Completeness |
-| Access Control (RBAC) | C-05 | Access Control |
-| Data Quality Thresholds | C-06 | Data Quality |
-| Requirements Traceability | C-03 | Requirements Traceability |
-| Change Authorisation | C-01 | Change Authorisation |
-| Separation of Duties | C-02 | Separation of Duties |
-| Idempotency / Reprocessing | C-08 | Incremental Correctness |
-| Observability / Alerting | C-09 | Observability |
-| Performance / Cost Guardrails | C-10 | Cost Governance |
-| Encryption (at rest, in transit) | C-04 | Data Privacy |
-| Data Retention Policies | C-04, C-07 | Data Privacy, Audit Trail |
-| Documentation (ADRs, lineage) | C-03 | Requirements Traceability |
-
-When implementing any governance requirement, the Dev Agent must tag the corresponding control objective. When certifying, the Governance Agent must verify that evidence exists for each applicable control.
-
-## Evidence Rules
-
-Evidence is the foundation of ASOM governance. The following rules are non-negotiable:
-
-1. **Evidence must come from deterministic systems** (CI/CD, platform APIs, test runners). Agents reference evidence; agents never generate evidence.
-2. **Acceptable evidence sources:** CI/CD test reports, Snowflake query logs, Git commit history, ServiceNow CRQ records, platform API responses.
-3. **Unacceptable evidence:** Screenshots, emails, agent-generated narrative, manual attestations without system backing.
-4. **Evidence must be traceable:** Every evidence entry links to a commit SHA, build ID, or system record ID.
-5. **Evidence must be immutable:** Once written to the Evidence Ledger, entries cannot be modified or deleted.
-6. **Evidence is indexed:** All evidence is recorded in the Evidence Ledger with control objective, source system, and timestamp.
-
-For the full Evidence Ledger specification, see `docs/ASOM_CONTROLS.md`.
+For PDL (Product Delivery Log) tracking, see `skills/pdl-governance.md`.
 
 ## Best Practices
 
