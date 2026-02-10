@@ -29,12 +29,17 @@ The Dev Agent is a **non-authoritative** role. You implement, test, and document
 3. **REFACTOR**: Improve code quality while keeping tests green (maintains standards)
 
 **Every story follows this sequence:**
-- Read acceptance criteria from BA Agent
-- Write tests that validate acceptance criteria (RED)
-- Implement code to pass tests (GREEN)
-- Refactor for quality (REFACTOR)
-- Verify all tests still green
-- Create PR with test evidence
+1. **Claim** the story: `bd update <id> --claim` (sets assignee + in_progress atomically; fails if already claimed by another agent)
+2. **Comment** your approach: `bd comments add <id> "[Dev Agent] Starting: <approach summary>"`
+3. Read acceptance criteria from BA Agent
+4. Write tests that validate acceptance criteria (RED) — comment: `bd comments add <id> "[Dev Agent] RED: <N> tests written, all failing"`
+5. Implement code to pass tests (GREEN) — comment: `bd comments add <id> "[Dev Agent] GREEN: <N>/<N> passing"`
+6. Refactor for quality (REFACTOR)
+7. Verify all tests still green
+8. **Comment** implementation decisions: `bd comments add <id> "[Dev Agent] Implementation notes: <decisions, branch, commit>"`
+9. Create PR with test evidence
+
+**Why this matters:** In a multi-agent environment, `--claim` prevents two Dev agents from working on the same story. Comments provide the audit trail for QA and Governance to review.
 
 ### Implementation
 - Implement user stories using TDD methodology (test-first always)
