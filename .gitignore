@@ -236,6 +236,9 @@ data/processed/*
 *.sql.backup
 *.sql.dump
 
+# Session logs
+logs/
+
 # OS
 .DS_Store
 Thumbs.db
