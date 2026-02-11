@@ -4,9 +4,14 @@
 # ============================================================================
 #
 # Usage:
-#   bash scripts/framework-sprint.sh           # Run all sessions sequentially
-#   bash scripts/framework-sprint.sh FW-009    # Run a single session
+#   bash scripts/framework-sprint.sh           # Run all — dependency-aware via `bd ready`
+#   bash scripts/framework-sprint.sh FW-009    # Run a single session (ignores deps)
 #   bash scripts/framework-sprint.sh --dry-run # Show prompts without running
+#
+# Dependency-aware mode (default):
+#   Uses `bd ready` to find unblocked beads, runs them, then re-checks.
+#   As each session closes its bead, blocked beads become ready.
+#   Requires dependencies set via `bd dep` (e.g. bd dep X --blocks Y).
 #
 # Each session:
 #   - Starts a fresh Claude context (no baggage)
@@ -188,6 +193,34 @@ When done:
 PROMPT
 }
 
+# ---- Prompt Lookup ---------------------------------------------------------
+
+get_prompt() {
+  local fw_id="$1"
+  case "$fw_id" in
+    FW-009) fw009_prompt ;;
+    FW-010) fw010_prompt ;;
+    FW-011) fw011_prompt ;;
+    FW-012) fw012_prompt ;;
+    FW-007) fw007_prompt ;;
+    *) echo "ERROR: No prompt defined for $fw_id" && return 1 ;;
+  esac
+}
+
+# Map bead IDs to FW- task IDs (used by dependency-aware runner)
+bead_to_fw() {
+  local bead_id="$1"
+  case "$bead_id" in
+    agentic-SCRUM-aab) echo "FW-009" ;;
+    agentic-SCRUM-a43) echo "FW-010" ;;
+    agentic-SCRUM-jko) echo "FW-011" ;;
+    agentic-SCRUM-0vs) echo "FW-012" ;;
+    agentic-SCRUM-kbz) echo "FW-008" ;;
+    agentic-SCRUM-2ru) echo "FW-007" ;;
+    *) echo "" ;;
+  esac
+}
+
 # ---- Runner ----------------------------------------------------------------
 
 run_session() {
@@ -222,6 +255,71 @@ run_session() {
   echo ""
 }
 
+# ---- Dependency-Aware Runner -----------------------------------------------
+
+run_all_by_dependency() {
+  # Uses `bd ready` to determine execution order.
+  # After each session completes (and closes its bead), blocked beads
+  # become unblocked and appear in the next `bd ready` call.
+  local max_rounds=10
+  local round=0
+
+  echo "Running sessions in dependency order (via bd ready)..."
+  echo ""
+
+  while [[ $round -lt $max_rounds ]]; do
+    round=$((round + 1))
+
+    # Get ready bead IDs (open, no blockers)
+    local ready_beads
+    ready_beads=$(bd ready --json 2>/dev/null \
+      | python3 -c "import sys,json; [print(i.get('id','')) for i in json.load(sys.stdin)]" 2>/dev/null \
+      || bd ready -q 2>/dev/null | grep -oE 'agentic-SCRUM-[a-z0-9]+')
+
+    if [[ -z "$ready_beads" ]]; then
+      echo ""
+      echo "No more ready beads. Checking for remaining open items..."
+      local remaining
+      remaining=$(bd list 2>/dev/null | grep -c "^○" || echo "0")
+      if [[ "$remaining" -gt 0 ]]; then
+        echo "⚠ ${remaining} beads still open (may be blocked or have no prompt defined):"
+        bd list 2>/dev/null
+      else
+        echo "✓ All beads closed."
+      fi
+      break
+    fi
+
+    echo "── Round ${round}: $(echo "$ready_beads" | wc -w | tr -d ' ') ready bead(s) ──"
+
+    for bead_id in $ready_beads; do
+      local fw_id
+      fw_id=$(bead_to_fw "$bead_id")
+
+      if [[ -z "$fw_id" ]]; then
+        echo "⏭ Skipping ${bead_id} (no prompt mapping — may be handled by another task)"
+        continue
+      fi
+
+      local prompt
+      prompt=$(get_prompt "$fw_id" 2>/dev/null)
+      if [[ $? -ne 0 || -z "$prompt" ]]; then
+        echo "⏭ Skipping ${fw_id} (no prompt defined)"
+        continue
+      fi
+
+      run_session "$fw_id" "$prompt"
+    done
+  done
+
+  echo ""
+  echo "════════════════════════════════════════════════════════════════"
+  echo "  All sessions complete. Review commits with: git log --oneline -10"
+  echo "  Review beads with: bd list"
+  echo "  Review blocked: bd blocked"
+  echo "════════════════════════════════════════════════════════════════"
+}
+
 # ---- Main ------------------------------------------------------------------
 
 main() {
@@ -244,23 +342,7 @@ main() {
     FW-012) run_session "FW-012" "$(fw012_prompt)" ;;
     FW-007) run_session "FW-007" "$(fw007_prompt)" ;;
     all)
-      echo "Running all sessions in dependency order..."
-      echo "  1. FW-009 (slim CLAUDE.md) — must go first, others reference it"
-      echo "  2. FW-010 (split GOVERNANCE-AGENT.md)"
-      echo "  3. FW-011 (cache bd patterns + AI-003/AI-005)"
-      echo "  4. FW-012 (retro template + FW-008 governance-first)"
-      echo "  5. FW-007 (UAT vs QA)"
-      echo ""
-      run_session "FW-009" "$(fw009_prompt)"
-      run_session "FW-010" "$(fw010_prompt)"
-      run_session "FW-011" "$(fw011_prompt)"
-      run_session "FW-012" "$(fw012_prompt)"
-      run_session "FW-007" "$(fw007_prompt)"
-      echo ""
-      echo "════════════════════════════════════════════════════════════════"
-      echo "  All sessions complete. Review commits with: git log --oneline -5"
-      echo "  Review beads with: bd list"
-      echo "════════════════════════════════════════════════════════════════"
+      run_all_by_dependency
       ;;
     *)
       echo "Usage: $0 [FW-009|FW-010|FW-011|FW-012|FW-007|all|--dry-run]"
