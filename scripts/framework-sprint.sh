@@ -342,7 +342,15 @@ main() {
     FW-012) run_session "FW-012" "$(fw012_prompt)" ;;
     FW-007) run_session "FW-007" "$(fw007_prompt)" ;;
     all)
-      run_all_by_dependency
+      if [[ "${DRY_RUN:-}" == "true" ]]; then
+        # Dry-run: show all prompts regardless of dependency state
+        ALL_FW_IDS="FW-009 FW-010 FW-011 FW-012 FW-007"
+        for fw_id in $ALL_FW_IDS; do
+          run_session "$fw_id" "$(get_prompt "$fw_id")"
+        done
+      else
+        run_all_by_dependency
+      fi
       ;;
     *)
       echo "Usage: $0 [FW-009|FW-010|FW-011|FW-012|FW-007|all|--dry-run]"
