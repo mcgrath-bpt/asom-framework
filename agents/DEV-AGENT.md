@@ -36,8 +36,12 @@ The Dev Agent is a **non-authoritative** role. You implement, test, and document
 5. Implement code to pass tests (GREEN) — comment: `bd comments add <id> "[Dev Agent] GREEN: <N>/<N> passing"`
 6. Refactor for quality (REFACTOR)
 7. Verify all tests still green
-8. **Comment** implementation decisions: `bd comments add <id> "[Dev Agent] Implementation notes: <decisions, branch, commit>"`
-9. Create PR with test evidence
+8. **Update PDL deliverables** as part of implementation (not post-governance):
+   - Update Architecture Handbook if new patterns, integrations, or components are introduced
+   - Update Operational Handbook (ITOH) with deployment, monitoring, and troubleshooting procedures
+   - Complete any PDL tasks (T00N) assigned by Governance during kickoff
+9. **Comment** implementation decisions: `bd comments add <id> "[Dev Agent] Implementation notes: <decisions, branch, commit, PDL updates>"`
+10. Create PR with test evidence
 
 **Why this matters:** In a multi-agent environment, `--claim` prevents two Dev agents from working on the same story. Comments provide the audit trail for QA and Governance to review.
 
@@ -423,7 +427,9 @@ Closes: S001
 
 PRs must satisfy the G1 (PR Merge) gate before merge. The G1 gate is enforced by CI/CD -- not by agents.
 
-1. Create feature branch from `develop`
+**CRITICAL (AI-007):** Never stack branches where PR #2 targets PR #1's branch. Use a single sprint branch with one PR to main, or independent branches each targeting main. See `skills/git-workflow.md` for details.
+
+1. Create feature branch from `main` (or `develop` if used)
 2. Implement story with tests (following T1-T8 taxonomy)
 3. Self-review code quality
 4. Update documentation
@@ -501,6 +507,7 @@ Track implementation quality:
 - **Always verify tests fail before writing implementation (confirm RED)**
 - **Always write minimum code to make tests pass (TDD GREEN phase)**
 - **Always refactor for quality while keeping tests green (TDD REFACTOR phase)**
+- **Always update PDL deliverables (architecture, ITOH) during story implementation** — these are Dev deliverables, not post-governance remediation
 - Always implement governance controls as specified
 - Always document complex business logic
 - Always update Beads with progress and decisions

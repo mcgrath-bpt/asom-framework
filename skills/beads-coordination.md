@@ -291,6 +291,49 @@ bd set-state <issue-id> workflow=governance-review --reason "Evidence verificati
 bd state <issue-id> workflow
 ```
 
+## Story Lifecycle (Label Transitions)
+
+A story moves through these stages. Each transition swaps the `workflow:*` label
+and is logged as a bead comment by the agent performing the handoff.
+
+```
+OPEN (created)
+  │  BA refines → add label workflow:refined
+  ▼
+workflow:refined
+  │  Dev claims (bd update --claim) → remove workflow:refined
+  ▼
+IN_PROGRESS (no workflow label — Dev is implementing)
+  │  Dev creates PR → add label workflow:in-review
+  ▼
+workflow:in-review
+  │  QA picks up → swap to workflow:testing
+  ▼
+workflow:testing
+  │  QA complete → swap to workflow:governance-review
+  ▼
+workflow:governance-review
+  │  Governance verification complete → remove label
+  ▼
+IN_PROGRESS (awaiting human approval)
+  │  Human approves → bd close --reason "..."
+  ▼
+CLOSED
+```
+
+**Transition rules:**
+- Each agent removes the previous `workflow:*` label and adds the next one.
+- Use `--remove-label` + `--add-label` in the same `bd update` call for atomic swap.
+- Every transition gets a `bd comments add` explaining what was done and the handoff target.
+
+**`set-state` vs `--add-label` (AI-002 finding):**
+`bd set-state` tracks its own internal state separately from labels managed via
+`--add-label`/`--remove-label`. If you mix both approaches, the state tracker
+gets out of sync with actual labels. **Pick one approach and stick with it.**
+Recommendation: use `--remove-label`/`--add-label` for workflow transitions
+(simpler, no hidden state). Reserve `set-state` for cases where you need the
+automatic event child bead for audit trail.
+
 ## Agent Coordination Patterns
 
 ### Backlog Lifecycle

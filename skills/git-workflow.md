@@ -697,6 +697,16 @@ main (protected -- no direct commits)
 - TDD commit history (RED → GREEN → REFACTOR visible in branch)
 - No secrets or PII in diff
 
+**CRITICAL — No stacked branch chains (AI-007):**
+Stacked branches (e.g. s004→s005→s006 where each PR targets the previous feature branch) cause PRs to merge into feature branches instead of main. This requires a catch-up PR and creates a confusing history.
+
+**Rule:** Use ONE of these patterns per sprint:
+1. **Single sprint branch** (recommended): One branch for the sprint, one PR to main at the end.
+2. **Independent feature branches**: Each story branches from main and PRs to main independently.
+3. **Re-target after merge**: If using sequential branches, re-target each PR's base to main after the previous PR merges.
+
+Never chain PRs where PR #2 targets the branch from PR #1.
+
 **When to use `develop` branch:**
 - Optional. Use `main`-only for small teams or early adoption.
 - Add `develop` as integration branch when multiple stories merge
