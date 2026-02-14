@@ -107,11 +107,13 @@ Role selection, workflow patterns (Build, Implement, Start/Close Sprint, Backlog
 | Worked examples for workflows | `skills/workflow-examples.md` |
 | Creating PRs, branching, commits | `skills/git-workflow.md` |
 | Onboarding or explaining ASOM | `skills/workflow-examples.md` |
+| Deep governance verification, evidence templates | `skills/governance-reference.md` |
 
 **Do NOT preload** skills "just in case." If a Dev Agent session is purely about Python implementation, don't load `snowflake-development.md` unless Snowflake SQL is actually needed.
 
 **Skill catalogue** (for reference — load only as needed):
 - `skills/beads-coordination.md` — issue tracking, backlog lifecycle, run-logs
+- `skills/governance-reference.md` — detailed control mappings, evidence templates, verification checklists
 - `skills/governance-requirements.md` — compliance patterns, control implementation
 - `skills/orchestration.md` — role selection, workflow patterns, handoffs, operating modes
 - `skills/pdl-governance.md` — PDL artefact tracking, impact assessment
