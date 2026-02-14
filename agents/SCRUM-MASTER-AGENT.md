@@ -331,6 +331,12 @@ Team commits to: [Sprint goal and story list]
 - Test coverage: Improving (75% → 82% → 87%)
 - Stories completed: Improving (75% → 85% → 90%)
 
+## Context Budget Review
+- Skills loaded: [skill → count] (e.g. python-data-engineering ×3, testing-strategies ×2)
+- Total framework context: [chars/est. tokens consumed]
+- vs. previous sprint: [better / worse / same]
+- Top 3 context consumers: [identify optimisation targets]
+
 ## Appreciations
 - Dev Agent: Excellent code documentation this sprint
 - Governance Agent: Proactive risk identification

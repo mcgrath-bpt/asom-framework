@@ -82,6 +82,8 @@ These execute within a sprint. They consume stories that are already refined.
 
 Note: If stories are not yet refined when this pattern is invoked, the BA discovery and grooming patterns run first. See "Backlog refinement" and "Groom the backlog" above.
 
+**MANDATORY:** Governance kickoff (control applicability + PDL Impact Assessment) must complete BEFORE BA discovery begins. Skipping this is a process violation.
+
 **Pattern: "Implement [story]"** (Development workflow — story must have passed DoR)
 1. **Dev** → Create feature branch (`feature/<story-id>-description`). Implement with TDD. Push branch. Prepare PR. Complete any assigned PDL tasks (architecture, ITOH).
 2. **→ Gate G1:** Human merges PR (linked story, passing tests, TDD history visible)
